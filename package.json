@@ -11,18 +11,37 @@
   "bugs": {
     "url": "https://github.com/jasonwong26/LifeQuest-Web-UI/issues"
   },
-  "homepage": "https://github.com/jasonwong26/LifeQuest-Web-UI#readme"  
-  "dependencies": {
-    "react": "^16.4.2",
-    "react-dom": "^16.4.2",
-    "react-scripts-ts": "2.17.0"
-  },
+  "homepage": "https://github.com/jasonwong26/LifeQuest-Web-UI#readme",
   "scripts": {
+    "lint": "tslint 'src/**/*.ts?(x)' || exit 0",
+    "lint:fix": "tslint 'src/**/*.ts?(x)' --fix",
     "start": "react-scripts-ts start",
     "build": "react-scripts-ts build",
     "test": "react-scripts-ts test --env=jsdom",
     "eject": "react-scripts-ts eject",
     "deploy": "npm run build && aws s3 sync build/ s3://lifequest-web-ui"
+  },
+  "dependencies": {
+    "@types/react-bootstrap": "^0.32.11",
+    "@types/react-redux": "^6.0.6",
+    "@types/react-router-bootstrap": "^0.24.5",
+    "@types/react-router-dom": "^4.3.0",
+    "@types/toastr": "^2.1.35",
+    "bootstrap": "^3.3.6",
+    "connected-react-router": "^4.4.1",
+    "react": "^16.4.2",
+    "react-bootstrap": "^0.32.3",
+    "react-dom": "^16.4.2",
+    "react-redux": "^5.0.7",
+    "react-router": "^4.3.1",
+    "react-router-bootstrap": "^0.24.4",
+    "react-router-dom": "^4.3.1",
+    "react-scripts-ts": "2.17.0",
+    "redux": "^4.0.0",
+    "redux-devtools-extension": "^2.13.5",
+    "redux-saga": "^0.16.0",
+    "toastr": "^2.1.4",
+    "typesafe-actions": "^2.0.4"
   },
   "devDependencies": {
     "@types/jest": "^23.3.1",
