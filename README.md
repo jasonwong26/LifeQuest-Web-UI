@@ -5,6 +5,5 @@ Web UI for LifeQuest App
 
 # TODO:
 
-- Refactor admin/character pages
 - Implement character CRUD methods
 - Implement Cutscene pages

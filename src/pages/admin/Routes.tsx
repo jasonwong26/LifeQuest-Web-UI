@@ -5,8 +5,7 @@ import { RouteComponentProps, Route, Switch } from "react-router-dom";
 import NotFoundPage from "../../pages/NotFound";
 import HomePage from "./Home";
 
-import CharactersIndexPage from "./characters/List";
-import CharactersEditPage from "./characters/Edit";
+import CharactersPage from "./characters";
 
 import { ApplicationState, ConnectedReduxProps } from "../../store/root";
 import { Character } from "../../store/admin/characters/_types";
@@ -29,8 +28,8 @@ class AdminPage extends React.Component<AllProps> {
       <Switch>
         <Route exact path={match.path} component={HomePage} />
 
-        <Route exact path={match.path + "/characters"} component={CharactersIndexPage} />
-        <Route path={match.path + "/characters/:id"} component={CharactersEditPage} />
+        <Route exact path={match.path + "/characters"} component={CharactersPage} />
+        <Route path={match.path + "/characters/:id"} component={CharactersPage} />
 
         <Route component={NotFoundPage} />
       </Switch>

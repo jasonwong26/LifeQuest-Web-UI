@@ -24,7 +24,7 @@ const Header: React.SFC<HeaderProps> = ({ title }) => (
       </Nav>
       <Nav>
         <LinkContainer to="/admin/cutscenes">
-          <NavItem eventKey={1}>CutScenes</NavItem>
+          <NavItem eventKey={1}>Cut Scenes</NavItem>
         </LinkContainer>
       </Nav>
       <Nav>

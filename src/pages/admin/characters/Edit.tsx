@@ -1,108 +1,60 @@
 import * as React from "react";
-import { Dispatch } from "redux";
-import { connect } from "react-redux";
-import { RouteComponentProps } from "react-router";
-import { Button } from "react-bootstrap";
 import { LinkContainer } from "react-router-bootstrap";
 
-import Page from "../../../components/layout/Page";
 import LoadingBar from "../../../components/layout/LoadingBar";
+import Form from "./Form";
 
-import { ApplicationState, ConnectedReduxProps } from "../../../store/root";
-import { Character, fetchRequest } from "../../../store/admin/characters";
+import { Character } from "../../../store/admin/characters";
 
 // Separate state props + dispatch props to their own interfaces.
-interface PropsFromState {
-  loading: boolean
-  data: Character[]
-  errors: string
+interface Props {
+  loading: boolean,
+  data?: Character
 }
 
-// We can use `typeof` here to map our dispatch types to the props, like so.
-interface PropsFromDispatch {
-  fetchRequest: typeof fetchRequest
-}
+const Edit: React.SFC<Props> = ({ loading, data }) => {
+  return (
+    <React.Fragment>
+      <div>
+        <LinkContainer to="../characters">
+          <button className="btn btn-default" type="button">Back</button>
+        </LinkContainer>
+      </div>
 
-interface RouteParams {
-  id: string
-}
-
-interface State {
-  selected?: Character
-}
-
-// Combine both state + dispatch props - as well as any props we want to pass - in a union type.
-type AllProps = PropsFromState &
-  PropsFromDispatch &
-  RouteComponentProps<RouteParams> &
-  ConnectedReduxProps;
-
-class CharactersEditPage extends React.Component<AllProps, State> {
-  constructor(props: AllProps) {
-    super(props);
-
-    this.state = {
-      selected: undefined
-    };
-  }
-
-  public componentDidMount() {
-    const { data } = this.props;
-
-    if (!data || data.length === 0) {
-      this.props.fetchRequest();
-    }
-  }
-
-  public render() {
-    const { data, loading, match } = this.props;
-    const selected = data.find(character => character.id === match.params.id);
-
-    return (
-      <Page>
-        <div>
-          <LinkContainer to="../characters">
-            <Button>Back</Button>
-          </LinkContainer>
-        </div>
-        <div>
+      <div className="row gutter-top">
+        <div className="col-sm-12">
           <LoadingBar loading={loading} />
-          {!loading && selected && (
-            <div className="row">
-              <div className="col-sm-12">
-                <div>
-                  <h3>{selected.name}</h3>
-                  <p>
-                    {selected.description}
-                  </p>
-                </div>
-              </div>
-            </div>
+
+          {!loading && data && (
+            renderCharacter(data)
+          )}
+          {!loading && !data && (
+            <div className="alert alert-danger">Specified character not found...</div>
           )}
         </div>
-      </Page>
-    );
-  }
-}
+      </div>
+    </React.Fragment>
+  );
+};
 
-// It's usually good practice to only include one context at a time in a connected component.
-// Although if necessary, you can always include multiple contexts. Just make sure to
-// separate them from each other to prevent prop conflicts.
-const mapStateToProps = ({ characters }: ApplicationState) => ({
-  loading: characters.loading,
-  errors: characters.errors,
-  data: characters.data
-});
+const renderCharacter: React.SFC<Character> = data => {
+  const created = new Date(data.created);
+  const changed = new Date(data.lastUpdated);
 
-// mapDispatchToProps is especially useful for constraining our actions to the connected component.
-// You can access these via `this.props`.
-const mapDispatchToProps = (dispatch: Dispatch) => ({
-  fetchRequest: () => dispatch(fetchRequest())
-});
+  return (
+    <div>
+      <Form data={data} />
 
-// Now let's connect our component!
-// With redux v4's improved typings, we can finally omit generics here.
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(CharactersEditPage);
+      <ul className="list-inline gutter-top">
+        <li>
+          <strong>Created</strong>: {created.toLocaleString()}
+        </li>
+        <li>
+          <strong>Last Modified</strong>: {changed.toLocaleString()}
+        </li>
+      </ul>
+    </div>
+  );
+};
+
+export default Edit;

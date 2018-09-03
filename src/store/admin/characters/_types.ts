@@ -1,11 +1,17 @@
 import { ApiResponse } from "../../../utility/callApi";
 
+interface CharacterImage {
+  id: string,
+  notes?: string
+  url: string,
+}
 export interface Character extends ApiResponse {
   id: string
   name: string,
   description: string,
   created: number,
   lastUpdated: number
+  images?: CharacterImage[]
 }
 
 export const enum CharactersActions {
