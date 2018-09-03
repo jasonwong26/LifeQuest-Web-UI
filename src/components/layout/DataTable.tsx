@@ -7,7 +7,7 @@ interface DataTableProps {
 }
 
 const DataTable: React.SFC<DataTableProps> = ({ children, widths, columns }) => (
-  <Table striped bordered condensed>
+  <Table striped bordered>
     <thead>
       <tr>
         {columns.map((column, i) => (

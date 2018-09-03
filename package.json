@@ -17,6 +17,7 @@
     "lint:fix": "tslint 'src/**/*.ts?(x)' --fix",
     "start": "react-scripts-ts start",
     "build": "react-scripts-ts build",
+    "pretest": "node tools/testSetup.js",
     "test": "react-scripts-ts test --env=jsdom",
     "eject": "react-scripts-ts eject",
     "deploy": "npm run build && aws s3 sync build/ s3://lifequest-web-ui"
