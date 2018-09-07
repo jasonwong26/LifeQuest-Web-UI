@@ -5,3 +5,8 @@
 .gutter-left { margin-left: 15px; }
 .gutter-right { margin-right: 15px; }
 .gutter-bottom { margin-bottom: 15px; }
+
+.gutter-top-sm { margin-top: 5px; }
+.gutter-left-sm { margin-left: 5px; }
+.gutter-right-sm { margin-right: 5px; }
+.gutter-bottom-sm { margin-bottom: 5px; }

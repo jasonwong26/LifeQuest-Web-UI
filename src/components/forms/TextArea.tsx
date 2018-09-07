@@ -24,7 +24,7 @@ export const TextArea: React.SFC<Props> = ({name, label, onChange, placeholder, 
         className="form-control"
         placeholder={placeholder}
         rows={rows || 3}
-        value={value}
+        value={value || ""}
         onChange={onChange}/>
       {error && <small className="text-danger">{error}</small>}
     </div>

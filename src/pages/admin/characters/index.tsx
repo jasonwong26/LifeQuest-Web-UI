@@ -1,5 +1,6 @@
 import * as React from "react";
-import { Dispatch } from "redux";
+import { Dispatch, bindActionCreators } from "redux";
+
 import { connect } from "react-redux";
 import { RouteComponentProps } from "react-router";
 
@@ -8,19 +9,22 @@ import List from "./List";
 import Edit from "./Edit";
 
 import { ApplicationState, ConnectedReduxProps } from "../../../store/root";
-import { Character, fetchRequest } from "../../../store/admin/characters";
+import { Character, fetchRequest, updateRequest } from "../../../store/admin/characters";
 
 
 // Separate state props + dispatch props to their own interfaces.
 interface PropsFromState {
-  loading: boolean
+  loading: boolean,
+  saving: boolean,
+  deleting: boolean,
   data: Character[]
   errors: string
 }
 
 // We can use `typeof` here to map our dispatch types to the props, like so.
 interface PropsFromDispatch {
-  fetchRequest: typeof fetchRequest
+  fetchRequest: typeof fetchRequest,
+  updateRequest: typeof updateRequest
 }
 
 interface RouteParams {
@@ -44,7 +48,7 @@ class CharactersPage extends React.Component<AllProps> {
   }
 
   public render() {
-    const { data, loading, match } = this.props;
+    const { data, loading, saving, deleting, match } = this.props;
     const specified = !!match.params.id;
     const selected = data.find(character => character.id === match.params.id);
 
@@ -54,7 +58,7 @@ class CharactersPage extends React.Component<AllProps> {
           <List loading={loading} data={data} />
         )}
         { specified && (
-          <Edit loading={loading} data={selected} />
+          <Edit loading={loading} saving={saving} deleting={deleting} data={selected} save={this.props.updateRequest} />
         )}
       </Page>
     );
@@ -70,11 +74,14 @@ const mapStateToProps = ({ characters }: ApplicationState) => ({
   data: characters.data
 });
 
-// mapDispatchToProps is especially useful for constraining our actions to the connected component.
-// You can access these via `this.props`.
-const mapDispatchToProps = (dispatch: Dispatch) => ({
-  fetchRequest: () => dispatch(fetchRequest())
-});
+const mapDispatchToProps = (dispatch: Dispatch) => {
+  const actions = {
+    fetchRequest,
+    updateRequest
+  };
+
+  return bindActionCreators(actions, dispatch);
+};
 
 // Now let's connect our component!
 // With redux v4's improved typings, we can finally omit generics here.

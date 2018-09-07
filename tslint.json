@@ -38,6 +38,12 @@
                         "constructor",
                         "instance-method"
                       ]
-                    }]
+                    }],
+    "no-console": {
+      "severity": "warning"
+    },
+    "no-debugger": {
+      "severity": "warning"
+    }
   }
 }

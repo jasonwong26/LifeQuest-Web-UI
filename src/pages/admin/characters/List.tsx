@@ -14,10 +14,10 @@ interface Props {
 
 const List: React.SFC<Props> = ({ loading, data }) => {
   return (
-    <DataTable columns={["Character"]} widths={["auto", "", ""]}>
+    <DataTable columns={["Character"]}>
       {loading && data.length === 0 && (
         <tr>
-          <td>
+          <td  colSpan={2}>
             <LoadingBar loading={loading} />
           </td>
         </tr>

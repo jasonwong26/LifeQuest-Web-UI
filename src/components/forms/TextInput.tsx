@@ -24,7 +24,7 @@ export const TextInput: React.SFC<Props> = ({name, label, onChange, placeholder,
           name={name}
           className="form-control"
           placeholder={placeholder}
-          value={value}
+          value={value||""}
           onChange={onChange}/>
         {error && <small className="text-danger">{error}</small>}
       </div>

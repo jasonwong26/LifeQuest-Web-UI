@@ -10,3 +10,7 @@ export const fetchRequest = () => action(CharactersActions.FETCH_REQUEST);
 // type them properly as well.
 export const fetchSuccess = (data: Character[]) => action(CharactersActions.FETCH_SUCCESS, data);
 export const fetchError = (message: string) => action(CharactersActions.FETCH_ERROR, message);
+
+export const updateRequest = (data: Character) => action(CharactersActions.UPDATE_REQUEST, data);
+export const updateSuccess = (data: Character) => action(CharactersActions.UPDATE_SUCCESS, data);
+export const updateError = (message: string) => action(CharactersActions.UPDATE_ERROR, message);

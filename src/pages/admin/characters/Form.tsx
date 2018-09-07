@@ -1,74 +1,101 @@
 import * as React from "react";
 
 import {TextInput, TextArea, SubmitButton} from "../../../components/forms";
+import {ImageForm } from "./ImageForm";
 
-import { Character } from "../../../store/admin/characters";
+import { Character, CharacterImage, updateRequest } from "../../../store/admin/characters";
 
-interface Props {
+export interface FormProps {
   data: Character,
-  save?: () => void
+  saving: boolean,
+  deleting: boolean,
+  save: typeof updateRequest,
+  saveError?: string
 }
 
 interface State {
   data: Character,
-  errors: any,
-  saving: boolean
+  errors: any
 }
 
 type HTMLFormInput = HTMLInputElement | HTMLTextAreaElement;
 
-class Form extends React.Component<Props, State> {
-  constructor(props: Props) {
+const emptyImage: CharacterImage = {
+  title: "",
+  url: "",
+  notes: undefined
+};
+
+export class Form extends React.Component<FormProps, State> {
+  constructor(props: FormProps) {
     super(props);
 
     this.state = {
       data: props.data,
-      errors: {},
-      saving: false
+      errors: {}
     };
   }
 
-  public componentWillReceiveProps(nextProps: Props) {
+  public componentWillReceiveProps(nextProps: FormProps) {
     if (this.props.data.id !== nextProps.data.id) {
       this.setState({data: Object.assign({}, nextProps.data)});
     }
   }
 
   public render() {
+    const { saving, deleting } = this.props;
+    const { data, errors } = this.state;
+
+    const image = data.images
+                    ? data.images[0]
+                    : emptyImage;
+
     return (
       <form
         onSubmit={this.onSave}>
-        <TextInput
-          label="Slug"
-          name="id"
-          onChange={this.onChange}
-          value={this.state.data.id}
-          error={this.state.errors.id}
-         />
          <TextInput
            label="Name"
            name="name"
            onChange={this.onChange}
-           value={this.state.data.name}
-           error={this.state.errors.name}
-          />
+           value={data.name}
+           error={errors.name} />
         <TextArea
           label="Description"
           name="description"
           onChange={this.onChange}
-          value={this.state.data.description}
-          error={this.state.errors.description}
-          />
+          value={data.description}
+          error={errors.description} />
 
+        <hr/>
+        <ImageForm
+          data={image}
+          onChange={this.onImageChange}
+          />
+        <hr/>
+
+        <div className="form-group">
           <SubmitButton
-            value={this.state.saving ? "Saving" : "Save"}
-            disabled={this.state.saving}
-            />
+            value={saving ? "Saving" : "Save"}
+            disabled={saving} />
+          <button
+            className="btn btn-danger gutter-left"
+            onClick={this.onDelete}
+            title="Delete"
+            disabled={deleting}>
+            {deleting ? "Deleting" : "Delete"}
+          </button>
+        </div>
       </form>
     );
   }
 
-  private onChange = (event: React.ChangeEvent<HTMLFormInput> ) => {
+  private onImageChange = (image: CharacterImage) => {
+    const change = { images: [ image ] };
+    const updated = Object.assign({}, this.state.data, change);
+    this.setState({ data: updated });
+  }
+
+  private onChange = (event: React.ChangeEvent<HTMLFormInput>) => {
     const field = event.target.name;
     const value = event.target.value;
     const change = { [field]: value };
@@ -84,9 +111,9 @@ class Form extends React.Component<Props, State> {
       return;
     }
 
-    alert("saving...");
+    this.saveChanges();
   }
-  private isValid: () => boolean = () => {
+  private isValid = () => {
     const data = this.state.data;
     const errors: {[key: string]: string} = {};
 
@@ -105,8 +132,15 @@ class Form extends React.Component<Props, State> {
     this.setState({ errors });
     return Object.keys(errors).length === 0;
   }
+  private saveChanges = () => {
+    const updated = this.state.data;
+    const saveFunc = this.props.save;
+
+    saveFunc(updated);
+  }
+
+  private onDelete = (event: React.MouseEvent<HTMLElement>) => {
+    event.preventDefault();
+    alert("Delete clicked!");
+  }
 }
-
-
-
-export default Form;

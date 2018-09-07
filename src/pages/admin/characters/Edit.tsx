@@ -2,17 +2,20 @@ import * as React from "react";
 import { LinkContainer } from "react-router-bootstrap";
 
 import LoadingBar from "../../../components/layout/LoadingBar";
-import Form from "./Form";
+import { Form, FormProps } from "./Form";
 
-import { Character } from "../../../store/admin/characters";
+import { Character, updateRequest } from "../../../store/admin/characters";
 
 // Separate state props + dispatch props to their own interfaces.
 interface Props {
   loading: boolean,
-  data?: Character
+  saving: boolean,
+  deleting: boolean,
+  data?: Character,
+  save: typeof updateRequest
 }
 
-const Edit: React.SFC<Props> = ({ loading, data }) => {
+const Edit: React.SFC<Props> = ({ loading, saving, deleting, data, save }) => {
   return (
     <React.Fragment>
       <div>
@@ -26,7 +29,7 @@ const Edit: React.SFC<Props> = ({ loading, data }) => {
           <LoadingBar loading={loading} />
 
           {!loading && data && (
-            renderCharacter(data)
+            renderCharacter({data, saving, deleting, save})
           )}
           {!loading && !data && (
             <div className="alert alert-danger">Specified character not found...</div>
@@ -37,13 +40,13 @@ const Edit: React.SFC<Props> = ({ loading, data }) => {
   );
 };
 
-const renderCharacter: React.SFC<Character> = data => {
+const renderCharacter: React.SFC<FormProps> = ({ data, saving, deleting, save }) => {
   const created = new Date(data.created);
   const changed = new Date(data.lastUpdated);
 
   return (
-    <div>
-      <Form data={data} />
+    <React.Fragment>
+      <Form data={data} saving={saving} deleting={deleting} save={save} />
 
       <ul className="list-inline gutter-top">
         <li>
@@ -53,7 +56,7 @@ const renderCharacter: React.SFC<Character> = data => {
           <strong>Last Modified</strong>: {changed.toLocaleString()}
         </li>
       </ul>
-    </div>
+    </React.Fragment>
   );
 };
 
