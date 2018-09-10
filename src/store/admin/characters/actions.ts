@@ -11,6 +11,14 @@ export const fetchRequest = () => action(CharactersActions.FETCH_REQUEST);
 export const fetchSuccess = (data: Character[]) => action(CharactersActions.FETCH_SUCCESS, data);
 export const fetchError = (message: string) => action(CharactersActions.FETCH_ERROR, message);
 
+export const createRequest = (data: Character) => action(CharactersActions.CREATE_REQUEST, data);
+export const createSuccess = (data: Character) => action(CharactersActions.CREATE_SUCCESS, data);
+export const createError = (message: string) => action(CharactersActions.CREATE_ERROR, message);
+
 export const updateRequest = (data: Character) => action(CharactersActions.UPDATE_REQUEST, data);
 export const updateSuccess = (data: Character) => action(CharactersActions.UPDATE_SUCCESS, data);
 export const updateError = (message: string) => action(CharactersActions.UPDATE_ERROR, message);
+
+export const deleteRequest = (data: Character) => action(CharactersActions.DELETE_REQUEST, data);
+export const deleteSuccess = (data: Character) => action(CharactersActions.DELETE_SUCCESS, data);
+export const deleteError = (message: string) => action(CharactersActions.DELETE_ERROR, message);

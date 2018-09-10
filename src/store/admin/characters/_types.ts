@@ -9,7 +9,7 @@ export interface Character extends ApiResponse {
   description: string,
   created: number,
   lastUpdated: number
-  images?: CharacterImage[]
+  images: CharacterImage[]
 }
 export interface CharacterImage {
   url: string,
@@ -22,9 +22,17 @@ export const enum CharactersActions {
   FETCH_SUCCESS = "@@characters/FETCH_SUCCESS",
   FETCH_ERROR = "@@characters/FETCH_ERROR",
 
+  CREATE_REQUEST = "@@characters/CREATE_REQUEST",
+  CREATE_SUCCESS = "@@characters/CREATE_SUCCESS",
+  CREATE_ERROR = "@@characters/CREATE_ERROR",
+
   UPDATE_REQUEST = "@@characters/UPDATE_REQUEST",
   UPDATE_SUCCESS = "@@characters/UPDATE_SUCCESS",
-  UPDATE_ERROR = "@@characters/UPDATE_ERROR"
+  UPDATE_ERROR = "@@characters/UPDATE_ERROR",
+
+  DELETE_REQUEST = "@@characters/DELETE_REQUEST",
+  DELETE_SUCCESS = "@@characters/DELETE_SUCCESS",
+  DELETE_ERROR = "@@characters/DELETE_ERROR"
 }
 
 export interface CharactersState {

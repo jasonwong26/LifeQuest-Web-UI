@@ -29,6 +29,7 @@ class AdminPage extends React.Component<AllProps> {
         <Route exact path={match.path} component={HomePage} />
 
         <Route exact path={match.path + "/characters"} component={CharactersPage} />
+        <Route exact path={match.path + "/characters/create"} component={CharactersPage} />
         <Route path={match.path + "/characters/:id"} component={CharactersPage} />
 
         <Route component={NotFoundPage} />

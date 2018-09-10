@@ -4,7 +4,7 @@ import { LinkContainer } from "react-router-bootstrap";
 import LoadingBar from "../../../components/layout/LoadingBar";
 import { Form, FormProps } from "./Form";
 
-import { Character, updateRequest } from "../../../store/admin/characters";
+import { Character, updateRequest, deleteRequest } from "../../../store/admin/characters";
 
 // Separate state props + dispatch props to their own interfaces.
 interface Props {
@@ -12,15 +12,20 @@ interface Props {
   saving: boolean,
   deleting: boolean,
   data?: Character,
-  save: typeof updateRequest
+  onSave: typeof updateRequest,
+  onDelete: typeof deleteRequest
 }
 
-const Edit: React.SFC<Props> = ({ loading, saving, deleting, data, save }) => {
+const Edit: React.SFC<Props> = ({ loading, data, ...rest }) => {
   return (
     <React.Fragment>
       <div>
         <LinkContainer to="../characters">
-          <button className="btn btn-default" type="button">Back</button>
+          <a
+            href="../characters"
+            className="btn btn-default" >
+            Back
+          </a>
         </LinkContainer>
       </div>
 
@@ -29,7 +34,7 @@ const Edit: React.SFC<Props> = ({ loading, saving, deleting, data, save }) => {
           <LoadingBar loading={loading} />
 
           {!loading && data && (
-            renderCharacter({data, saving, deleting, save})
+            renderCharacter({data, ...rest})
           )}
           {!loading && !data && (
             <div className="alert alert-danger">Specified character not found...</div>
@@ -40,13 +45,13 @@ const Edit: React.SFC<Props> = ({ loading, saving, deleting, data, save }) => {
   );
 };
 
-const renderCharacter: React.SFC<FormProps> = ({ data, saving, deleting, save }) => {
+const renderCharacter: React.SFC<FormProps> = ({ data, saving, deleting, onSave, onDelete }) => {
   const created = new Date(data.created);
   const changed = new Date(data.lastUpdated);
 
   return (
     <React.Fragment>
-      <Form data={data} saving={saving} deleting={deleting} save={save} />
+      <Form data={data} saving={saving} onSave={onSave} deleting={deleting} onDelete={onDelete} />
 
       <ul className="list-inline gutter-top">
         <li>

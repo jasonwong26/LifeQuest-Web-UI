@@ -5,8 +5,12 @@ import { TextInput, TextArea } from "../../../components/forms";
 import { CharacterImage } from "../../../store/admin/characters";
 
 export interface ImageFormProps {
+  index: number,
   data: CharacterImage,
-  onChange: (image: CharacterImage) => void
+  showAdd: boolean,
+  onAdd: () => void,
+  onChange: (index: number, image: CharacterImage) => void,
+  onDelete: (index: number) => void
 }
 
 interface State {
@@ -31,8 +35,10 @@ export class ImageForm extends React.Component<ImageFormProps, State> {
   }
 
   public render() {
+    const { index, showAdd } = this.props;
     const { data, errors } = this.state;
     const displayImage = data.url.length > 0 && data.title.length > 0;
+    const showDelete = index !== 0;
 
     return (
       <div className="row">
@@ -58,19 +64,37 @@ export class ImageForm extends React.Component<ImageFormProps, State> {
             value={data.notes}
             error={errors.notes} />
         </div>
-        {displayImage && (
-          <div className="col-sm-2">
-            <img
-              className="img-responsive img-thumbnail gutter-top"
-              src={data.url}
-              alt={data.title}
-              style={{width: "100%", height: "200px" } } />
-          </div>
-        )}
+        <div className="col-sm-2">
+          { displayImage && (
+            <div>
+              <img
+                className="img-responsive img-thumbnail gutter-top"
+                src={data.url}
+                alt={data.title}
+                style={{width: "100%", height: "200px" } } />
+            </div>
+          )}
+            <div className="gutter-top text-center">
+              { showAdd && displayImage && (
+                <button className="btn btn-primary" title="Add Image" onClick={this.onAdd}>
+                  <span className="glyphicon glyphicon-plus" aria-hidden="true" />
+                </button>
+              )}
+              { showDelete && (
+                <button className="btn btn-danger" title="Remove Image" onClick={this.onDelete}>
+                  <span className="glyphicon glyphicon-minus" aria-hidden="true" />
+                </button>
+              )}
+            </div>
+        </div>
       </div>
     );
   }
+  private onAdd = (event: React.MouseEvent<HTMLElement>) => {
+    event.preventDefault();
 
+    this.props.onAdd();
+  }
   private onChange = (event: React.ChangeEvent<HTMLFormInput>) => {
     const field = event.target.name;
     const value = event.target.value;
@@ -80,7 +104,8 @@ export class ImageForm extends React.Component<ImageFormProps, State> {
     this.setState({ data: updated });
 
     if(this.isValid()) {
-      this.props.onChange(updated);
+      const index = this.props.index;
+      this.props.onChange(index, updated);
     }
   }
   private isValid = () => {
@@ -97,5 +122,11 @@ export class ImageForm extends React.Component<ImageFormProps, State> {
 
     this.setState({ errors });
     return Object.keys(errors).length === 0;
+  }
+  private onDelete = (event: React.MouseEvent<HTMLElement>) => {
+    event.preventDefault();
+
+    const index = this.props.index;
+    this.props.onDelete(index);
   }
 }

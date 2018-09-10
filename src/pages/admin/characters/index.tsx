@@ -6,10 +6,11 @@ import { RouteComponentProps } from "react-router";
 
 import Page from "../../../components/layout/Page";
 import List from "./List";
+import Add from "./Add";
 import Edit from "./Edit";
 
 import { ApplicationState, ConnectedReduxProps } from "../../../store/root";
-import { Character, fetchRequest, updateRequest } from "../../../store/admin/characters";
+import { Character, fetchRequest, createRequest, updateRequest, deleteRequest } from "../../../store/admin/characters";
 
 
 // Separate state props + dispatch props to their own interfaces.
@@ -24,7 +25,9 @@ interface PropsFromState {
 // We can use `typeof` here to map our dispatch types to the props, like so.
 interface PropsFromDispatch {
   fetchRequest: typeof fetchRequest,
-  updateRequest: typeof updateRequest
+  createRequest: typeof createRequest,
+  updateRequest: typeof updateRequest,
+  deleteRequest: typeof deleteRequest
 }
 
 interface RouteParams {
@@ -36,9 +39,25 @@ interface RouteParams {
 type AllProps = PropsFromState &
   PropsFromDispatch &
   RouteComponentProps<RouteParams> &
+  RouteComponentProps<RouteParams> &
   ConnectedReduxProps;
 
-class CharactersPage extends React.Component<AllProps> {
+  interface State {
+    saving: boolean,
+    deleting: boolean
+  }
+
+class CharactersPage extends React.Component<AllProps, State> {
+  constructor(props: AllProps) {
+    super(props);
+
+    const { saving, deleting } = props;
+    this.state = {
+      saving,
+      deleting
+    };
+  }
+
   public componentDidMount() {
     const { loading, data } = this.props;
 
@@ -47,18 +66,53 @@ class CharactersPage extends React.Component<AllProps> {
     }
   }
 
+  public componentWillReceiveProps(nextProps: AllProps) {
+    const { saving, deleting } = nextProps;
+    const newState = {
+      saving,
+      deleting
+    };
+    
+    this.navAfterSave(newState);
+    this.setState(newState);
+  }
+  private navAfterSave(newState: State) {
+    const propState = newState.saving || newState.deleting;
+    const priorState = this.state.saving || this.state.deleting;
+
+    if(priorState && !propState) {
+      this.props.history.push("../characters");
+    }
+  }
+
   public render() {
     const { data, loading, saving, deleting, match } = this.props;
     const specified = !!match.params.id;
     const selected = data.find(character => character.id === match.params.id);
+    const isNew = match.url.endsWith("/create");
 
     return (
       <Page>
-        { !specified && (
-          <List loading={loading} data={data} />
+        { !specified && !isNew && (
+          <List
+            loading={loading}
+            data={data}/>
+        )}
+        { isNew && (
+          <Add
+            loading ={loading}
+            saving={saving}
+            onSave={this.props.createRequest} />
         )}
         { specified && (
-          <Edit loading={loading} saving={saving} deleting={deleting} data={selected} save={this.props.updateRequest} />
+          <Edit
+            loading={loading}
+            saving={saving}
+            deleting={deleting}
+            data={selected}
+            onSave={this.props.updateRequest}
+            onDelete={this.props.deleteRequest}
+           />
         )}
       </Page>
     );
@@ -70,6 +124,8 @@ class CharactersPage extends React.Component<AllProps> {
 // separate them from each other to prevent prop conflicts.
 const mapStateToProps = ({ characters }: ApplicationState) => ({
   loading: characters.loading,
+  saving: characters.saving,
+  deleting: characters.deleting,
   errors: characters.errors,
   data: characters.data
 });
@@ -77,7 +133,9 @@ const mapStateToProps = ({ characters }: ApplicationState) => ({
 const mapDispatchToProps = (dispatch: Dispatch) => {
   const actions = {
     fetchRequest,
-    updateRequest
+    createRequest,
+    updateRequest,
+    deleteRequest
   };
 
   return bindActionCreators(actions, dispatch);
