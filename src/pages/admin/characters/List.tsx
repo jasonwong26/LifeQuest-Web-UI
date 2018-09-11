@@ -6,7 +6,6 @@ import DataTable from "../../../components/layout/DataTable";
 
 import { Character } from "../../../store/admin/characters";
 
-// Separate state props + dispatch props to their own interfaces.
 interface Props {
   loading: boolean,
   data: Character[]

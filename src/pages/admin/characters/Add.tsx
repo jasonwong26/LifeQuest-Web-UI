@@ -6,7 +6,6 @@ import { Form, FormProps } from "./Form";
 
 import { Character, createRequest } from "../../../store/admin/characters";
 
-// Separate state props + dispatch props to their own interfaces.
 interface Props {
   loading: boolean,
   saving: boolean,
