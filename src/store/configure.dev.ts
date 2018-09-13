@@ -4,10 +4,7 @@ import { connectRouter, routerMiddleware } from "connected-react-router";
 import { composeWithDevTools } from "redux-devtools-extension";
 import { History } from "history";
 
-// TODO: add redux-immutable-state-invariant to project
-// import reduxImmutableStateInvariant from "redux-immutable-state-invariant";
-
-import { ApplicationState, rootReducer, rootSaga, initialState } from "./root";
+import { ApplicationState, rootReducer, rootSaga } from "./root";
 
 export default function configureStore(history: History): Store<ApplicationState> {
   const composeEnhancers = composeWithDevTools({});
@@ -15,7 +12,6 @@ export default function configureStore(history: History): Store<ApplicationState
 
   const store = createStore(
     connectRouter(history)(rootReducer),
-    initialState,
     composeEnhancers(applyMiddleware(routerMiddleware(history), sagaMiddleware))
   );
 

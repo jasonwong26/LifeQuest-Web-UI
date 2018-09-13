@@ -1,7 +1,6 @@
 import { Reducer } from "redux";
 import { Character, CharactersState, CharactersActions } from "./_types";
 
-// Type-safe initialState!
 const initialState: CharactersState = {
   data: [],
   errors: undefined,

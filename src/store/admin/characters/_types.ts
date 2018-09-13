@@ -1,5 +1,3 @@
-import {Action} from "redux";
-
 import { ApiResponse } from "../../../utility/callApi";
 
 
@@ -17,7 +15,7 @@ export interface CharacterImage {
   notes?: string
 }
 
-export const enum CharactersActions {
+export enum CharactersActions {
   FETCH_REQUEST = "@@characters/FETCH_REQUEST",
   FETCH_SUCCESS = "@@characters/FETCH_SUCCESS",
   FETCH_ERROR = "@@characters/FETCH_ERROR",
@@ -41,8 +39,4 @@ export interface CharactersState {
   readonly deleting: boolean,
   readonly data: Character[]
   readonly errors?: string
-}
-
-export interface PayloadAction<T> extends Action {
-  payload: T
 }

@@ -1,32 +1,26 @@
-import { combineReducers, Dispatch, Action, AnyAction } from "redux";
+import { combineReducers } from "redux";
 import { all } from "redux-saga/effects";
 
-import { AuthUserState, authReducer, initialAuthState } from "../auth";
-import { characterSagas, CharactersState, charactersReducer, initialCharactersState } from "../admin/characters";
+import { AuthUserState, authReducer } from "../auth";
+import { characterSagas, CharactersState, charactersReducer } from "../admin/characters";
+import * as Cutscenes from "../admin/cutscenes";
 
 // The top-level state object.
 export interface ApplicationState {
   auth: AuthUserState,
-  characters: CharactersState
-}
-
-// Additional props for connected React components. This prop is passed by default with `connect()`
-export interface ConnectedReduxProps<A extends Action = AnyAction> {
-  dispatch: Dispatch<A>
+  characters: CharactersState,
+  cutscenes: Cutscenes.CutscenesState
 }
 
 export const rootReducer = combineReducers<ApplicationState>({
   auth: authReducer,
-  characters: charactersReducer
+  characters: charactersReducer,
+  cutscenes: Cutscenes.reducer
 });
 
 export function* rootSaga() {
   yield all([
-    ...characterSagas
+    ...characterSagas,
+    ...Cutscenes.sagas
   ]);
 }
-
-export const initialState: ApplicationState = {
-  auth: initialAuthState,
-  characters: initialCharactersState
-};

@@ -15,6 +15,8 @@ interface Props {
   onDelete: typeof deleteRequest
 }
 
+// TODO: rewrite to use Redirect component
+
 const Edit: React.SFC<Props> = ({ loading, data, ...rest }) => {
   return (
     <React.Fragment>

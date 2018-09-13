@@ -2,15 +2,15 @@ import { call, put, takeEvery, takeLatest } from "redux-saga/effects";
 
 import { callApi } from "../../../utility/callApi";
 import { PayloadAction } from "../../shared";
-import { Character, CharactersActions } from "./_types";
+
+import { Cutscene, CutscenesActions } from "./_types";
 import * as Actions from "./actions";
 
 const API_HOST = process.env.REACT_APP_API || "";
 
 function* handleFetch() {
   try {
-    // To call async functions, use redux-saga's `call()`.
-    const res = yield call(callApi, "get", API_HOST, "/admin/characters");
+    const res = yield call(callApi, "get", API_HOST, "/admin/cutscenes");
 
     if (!res.error) {
       yield put(Actions.fetchSuccess(res));
@@ -26,11 +26,11 @@ function* handleFetch() {
   }
 }
 
-function* handleCreate(action: PayloadAction<Character>) {
+function* handleCreate(action: PayloadAction<Cutscene>) {
   try {
-    const character = action.payload;
+    const data = action.payload;
     // To call async functions, use redux-saga's `call()`.
-    const res = yield call(callApi, "post", API_HOST, `/admin/characters/`, character);
+    const res = yield call(callApi, "post", API_HOST, `/admin/cutscenes/`, data);
 
     if (!res.error) {
       yield put(Actions.createSuccess(res));
@@ -46,11 +46,11 @@ function* handleCreate(action: PayloadAction<Character>) {
   }
 }
 
-function* handleUpdate(action: PayloadAction<Character>) {
+function* handleUpdate(action: PayloadAction<Cutscene>) {
   try {
-    const character = action.payload;
+    const data = action.payload;
     // To call async functions, use redux-saga's `call()`.
-    const res = yield call(callApi, "put", API_HOST, `/admin/characters/${character.id}`, character);
+    const res = yield call(callApi, "put", API_HOST, `/admin/cutscenes/${data.id}`, data);
 
     if (!res.error) {
       yield put(Actions.updateSuccess(res));
@@ -66,14 +66,14 @@ function* handleUpdate(action: PayloadAction<Character>) {
   }
 }
 
-function* handleDelete(action: PayloadAction<Character>) {
+function* handleDelete(action: PayloadAction<Cutscene>) {
   try {
-    const character = action.payload;
+    const data = action.payload;
     // To call async functions, use redux-saga's `call()`.
-    const res = yield call(callApi, "delete", API_HOST, `/admin/characters/${character.id}`, character);
+    const res = yield call(callApi, "delete", API_HOST, `/admin/cutscenes/${data.id}`, data);
 
     if (!res.error) {
-      yield put(Actions.deleteSuccess(character));
+      yield put(Actions.deleteSuccess(data));
     } else {
       yield put(Actions.deleteError(res.error));
     }
@@ -86,9 +86,9 @@ function* handleDelete(action: PayloadAction<Character>) {
   }
 }
 
-export const characterSagas = [
-  takeEvery(CharactersActions.FETCH_REQUEST, handleFetch),
-  takeLatest(CharactersActions.CREATE_REQUEST, handleCreate),
-  takeLatest(CharactersActions.UPDATE_REQUEST, handleUpdate),
-  takeLatest(CharactersActions.DELETE_REQUEST, handleDelete)
+export const sagas = [
+  takeEvery(CutscenesActions.FETCH_REQUEST, handleFetch),
+  takeLatest(CutscenesActions.CREATE_REQUEST, handleCreate),
+  takeLatest(CutscenesActions.UPDATE_REQUEST, handleUpdate),
+  takeLatest(CutscenesActions.DELETE_REQUEST, handleDelete)
 ];

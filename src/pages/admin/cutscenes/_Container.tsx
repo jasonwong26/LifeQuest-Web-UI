@@ -2,14 +2,13 @@ import * as React from "react";
 import { Dispatch, bindActionCreators } from "redux";
 import { connect } from "react-redux";
 
+import { DataStatus } from "../../../store/shared";
 import { ApplicationState } from "../../../store/root";
-import * as Store from "../../../store/admin/characters";
+import * as Store from "../../../store/admin/cutscenes";
 
 interface PropsFromState {
-  loading: boolean,
-  saving: boolean,
-  deleting: boolean,
-  data: Store.Character[]
+  data: Store.Cutscene[],
+  status: DataStatus,
   errors: string
 }
 interface PropsFromDispatch {
@@ -18,13 +17,8 @@ interface PropsFromDispatch {
   updateRequest: typeof Store.updateRequest,
   deleteRequest: typeof Store.deleteRequest
 }
-interface PropsFromParent {
-  onSave?: () => void,
-  onDelete?: () => void
-}
 type ContainerProps = PropsFromState &
-                      PropsFromDispatch &
-                      PropsFromParent;
+                      PropsFromDispatch;
 
 interface OtherProps {
  children: (props: ContainerProps) => React.ReactNode
@@ -33,8 +27,7 @@ interface OtherProps {
 type AllProps = ContainerProps & OtherProps;
 
 interface State {
-  saving: boolean,
-  deleting: boolean
+  status: DataStatus
 }
 
 // TODO: rewrite to use Redirect component?
@@ -43,50 +36,31 @@ class Container extends React.Component<AllProps, State> {
   constructor(props: AllProps) {
     super(props);
 
-    const { saving, deleting } = props;
+    const { status } = props;
     this.state = {
-      saving,
-      deleting
+      status
     };
   }
 
   public componentDidMount() {
-    const { loading, data } = this.props;
+    const { status } = this.props;
 
-    if (!loading && !data || data.length === 0) {
+    if (status === DataStatus.PENDING) {
       this.props.fetchRequest();
     }
   }
 
   public componentWillReceiveProps(nextProps: AllProps) {
-    const { saving, deleting } = nextProps;
+    if(this.state.status === nextProps.status) {
+      return;
+    }
+
+    const { status } = nextProps;
     const newState = {
-      saving,
-      deleting
+      status
     };
 
-    this.navAfterSave(newState);
-    this.navAfterDelete(newState);
-
     this.setState(newState);
-  }
-  private navAfterSave(newState: State) {
-    const wasSaving = this.state.saving;
-    const isSaving = newState.saving;
-    const onSave = this.props.onSave;
-
-    if(wasSaving && !isSaving && onSave) {
-      onSave();
-    }
-  }
-  private navAfterDelete(newState: State) {
-    const wasDeleting = this.state.deleting;
-    const isDeleting = newState.deleting;
-    const onDelete = this.props.onDelete;
-
-    if(wasDeleting && !isDeleting && onDelete) {
-      onDelete();
-    }
   }
 
   public render() {
@@ -95,12 +69,10 @@ class Container extends React.Component<AllProps, State> {
   }
 }
 
-const mapStateToProps = ({ characters }: ApplicationState) => ({
-  loading: characters.loading,
-  saving: characters.saving,
-  deleting: characters.deleting,
-  errors: characters.errors,
-  data: characters.data
+const mapStateToProps = ({ cutscenes }: ApplicationState) => ({
+  data: cutscenes.data,
+  status: cutscenes.status,
+  errors: cutscenes.errors
 });
 
 const mapDispatchToProps = (dispatch: Dispatch) => {
@@ -115,7 +87,11 @@ const mapDispatchToProps = (dispatch: Dispatch) => {
   return bindActionCreators(actions, dispatch);
 };
 
-export default connect(
+const connectedContainer = connect(
   mapStateToProps,
   mapDispatchToProps
 )(Container);
+
+export {
+  connectedContainer as Container
+};

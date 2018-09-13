@@ -5,7 +5,7 @@ import ListPage from "./ListPage";
 import EditPage from "./EditPage";
 import AddPage from "./AddPage";
 
-const CharactersPages: React.SFC<RouteComponentProps<{}>> = ({match}) => {
+export const CharacterRoutes: React.SFC<RouteComponentProps<{}>> = ({match}) => {
   return (
     <Switch>
       <Route exact path={match.path} component={ListPage} />
@@ -14,5 +14,3 @@ const CharactersPages: React.SFC<RouteComponentProps<{}>> = ({match}) => {
     </Switch>
   );
 };
-
-export default CharactersPages;

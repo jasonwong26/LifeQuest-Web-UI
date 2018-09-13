@@ -7,16 +7,12 @@ import { History } from "history";
 import Routes from "./Routes";
 import { ApplicationState } from "./store/root";
 
-interface PropsFromDispatch {
-  [key: string]: any
-}
-interface OwnProps {
+interface Props {
   store: Store<ApplicationState>
   history: History
 }
-type AllProps = PropsFromDispatch & OwnProps;
 
-class App extends React.Component<AllProps> {
+class App extends React.Component<Props> {
   public render() {
     const { store, history } = this.props;
 

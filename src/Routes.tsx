@@ -29,6 +29,7 @@ const Routes: React.SFC = () => (
       {/* Admin */}
       <Route path="/admin" component={AdminRoutes} />
 
+      <Route exact path="/errors/notfound" component={NotFoundPage} />
       <Route component={NotFoundPage} />
     </Switch>
   </Root>
