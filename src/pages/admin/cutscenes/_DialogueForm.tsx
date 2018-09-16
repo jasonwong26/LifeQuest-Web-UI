@@ -26,31 +26,39 @@ export class DialogueForm extends React.Component<Props, State> {
   constructor(props: Props) {
     super(props);
 
+    const { data, characters } = props;
+    const selectedId = data.characterId;
+    const selectedCharacter = characters.find(char => char.id === selectedId);
+
     this.state = {
-      data: props.data,
+      data,
+      selectedCharacter,
       errors: {}
     };
   }
 
   public componentWillReceiveProps(nextProps: Props) {
-    this.setState({data: Object.assign({}, nextProps.data)});
+    const { data, characters } = nextProps;
+    const selectedId = data.characterId;
+    const selectedCharacter = characters.find(char => char.id === selectedId);
+
+    const newState = {
+      data,
+      selectedCharacter
+    };
+
+    this.setState(newState);
   }
 
   public render() {
     const { characters } = this.props;
     const { data, selectedCharacter, errors } = this.state;
-
-    // TODO: remove after testing
-    // const text = data.text.join("\n\n");
-
     const selectedImage = selectedCharacter
                        && selectedCharacter.images.find(img => img.url === data.imageUrl);
 
     return (
       <div className="row">
         <div className="col-sm-10">
-          {/* placeholder for image dropdown control */}
-
           <div className="row">
             <div className="col-sm-6">
               <DropDownList
@@ -83,6 +91,7 @@ export class DialogueForm extends React.Component<Props, State> {
                 }
                 defaultEmpty
                 onChange={this.onImageChange}
+                value={selectedImage && selectedImage.url}
                 />
             </div>
           </div>
