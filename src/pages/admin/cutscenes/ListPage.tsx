@@ -8,11 +8,15 @@ export const ListPage: React.SFC = () => {
   return (
     <Page>
       <Container>
-        {({ status, data }) => (
-          <List
-            status={status}
-            data={data} />
-          )}
+        {({ cutscenes }) => {
+          const { status, data } = cutscenes;
+
+          return (
+            <List
+              status={status}
+              data={data} />
+            );
+        }}
       </Container>
     </Page>
   );

@@ -5,35 +5,45 @@ import LoadingBar from "../../../components/layout/LoadingBar";
 import { Form, Props as FormProps } from "./_Form";
 
 import { DataStatus } from "../../../store/shared";
-import { Cutscene, createRequest } from "../../../store/admin/cutscenes";
+import { Cutscene, Dialogue, Position, createRequest } from "../../../store/admin/cutscenes";
+import { Character } from "../../../store/admin/characters";
 
 interface Props {
   status: DataStatus,
+  characters: Character[],
   errors?: string,
   onSave: typeof createRequest,
 }
 
-const template : Cutscene = {
+const dialogueTemplate : Dialogue = {
+  characterId: "",
+  imageUrl: "",
+  speaker: "",
+  position: Position.CENTER,
+  text:[""]
+};
+const sceneTemplate : Cutscene = {
   id: "New",
   name: "",
   description: "",
-  dialogue: [],
+  dialogue: [{ ...dialogueTemplate }],
   created: 0,
   lastUpdated: 0
 };
 
-const getEmptyCharacter: () => Cutscene = () => {
-  return { ...template };
+const getTemplate: () => Cutscene = () => {
+  const dialogue = { dialogue: [{ ...dialogueTemplate }] };
+  return { ...sceneTemplate, ...dialogue };
 };
 
 export const Add: React.SFC<Props> = ({ status, ...rest }) => {
   const loading = status === DataStatus.LOADING;
-  const data = getEmptyCharacter();
+  const data = getTemplate();
 
   return (
     <React.Fragment>
       <div>
-        <LinkContainer to="../characters">
+        <LinkContainer to="../cutscenes">
           <a
             href="../cutscenes"
             className="btn btn-default" >
@@ -47,7 +57,7 @@ export const Add: React.SFC<Props> = ({ status, ...rest }) => {
           <LoadingBar loading={loading} />
 
           {!loading && (
-            renderCharacter({data, status, ...rest})
+            renderScene({data, status, ...rest})
           )}
         </div>
       </div>
@@ -55,10 +65,10 @@ export const Add: React.SFC<Props> = ({ status, ...rest }) => {
   );
 };
 
-const renderCharacter: React.SFC<FormProps> = ({data, status, onSave}) => {
+const renderScene: React.SFC<FormProps> = ({data, status, characters, onSave}) => {
   return (
     <React.Fragment>
-      <Form data={data} status={status} onSave={onSave} />
+      <Form data={data} status={status} characters={characters} onSave={onSave} />
     </React.Fragment>
   );
 };

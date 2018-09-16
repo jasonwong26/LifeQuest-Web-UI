@@ -5,17 +5,27 @@ import { connect } from "react-redux";
 import { DataStatus } from "../../../store/shared";
 import { ApplicationState } from "../../../store/root";
 import * as Store from "../../../store/admin/cutscenes";
+import { Character, fetchRequest as fetchCharactersRequest } from "../../../store/admin/characters";
 
 interface PropsFromState {
-  data: Store.Cutscene[],
-  status: DataStatus,
-  errors: string
+  cutscenes: {
+    data: Store.Cutscene[],
+    status: DataStatus,
+    errors: string
+  },
+  characters: {
+    data: Character[],
+    status: DataStatus,
+    errors: string
+  }
 }
 interface PropsFromDispatch {
   fetchRequest: typeof Store.fetchRequest,
   createRequest: typeof Store.createRequest,
   updateRequest: typeof Store.updateRequest,
-  deleteRequest: typeof Store.deleteRequest
+  deleteRequest: typeof Store.deleteRequest,
+
+  fetchCharactersRequest: typeof fetchCharactersRequest
 }
 type ContainerProps = PropsFromState &
                       PropsFromDispatch;
@@ -27,7 +37,8 @@ interface OtherProps {
 type AllProps = ContainerProps & OtherProps;
 
 interface State {
-  status: DataStatus
+  cutscenesStatus: DataStatus
+  charactersStatus: DataStatus
 }
 
 // TODO: rewrite to use Redirect component?
@@ -36,28 +47,39 @@ class Container extends React.Component<AllProps, State> {
   constructor(props: AllProps) {
     super(props);
 
-    const { status } = props;
+    const cutscenesStatus = props.cutscenes.status;
+    const charactersStatus = props.characters.status;
+
     this.state = {
-      status
+      cutscenesStatus,
+      charactersStatus
     };
   }
 
   public componentDidMount() {
-    const { status } = this.props;
+    const { cutscenesStatus, charactersStatus } = this.state;
 
-    if (status === DataStatus.PENDING) {
+    if (cutscenesStatus === DataStatus.PENDING) {
       this.props.fetchRequest();
+    }
+
+    if(charactersStatus === DataStatus.PENDING) {
+      this.props.fetchCharactersRequest();
     }
   }
 
   public componentWillReceiveProps(nextProps: AllProps) {
-    if(this.state.status === nextProps.status) {
+    const cutscenesStatus = nextProps.cutscenes.status;
+    const charactersStatus = nextProps.characters.status;
+
+    if(this.state.cutscenesStatus === cutscenesStatus &&
+       this.state.charactersStatus === charactersStatus) {
       return;
     }
 
-    const { status } = nextProps;
     const newState = {
-      status
+      cutscenesStatus,
+      charactersStatus
     };
 
     this.setState(newState);
@@ -69,11 +91,28 @@ class Container extends React.Component<AllProps, State> {
   }
 }
 
-const mapStateToProps = ({ cutscenes }: ApplicationState) => ({
-  data: cutscenes.data,
-  status: cutscenes.status,
-  errors: cutscenes.errors
+const mapStateToProps = ({ cutscenes, characters }: ApplicationState) => ({
+  cutscenes: {
+    data: cutscenes.data,
+    status: cutscenes.status,
+    errors: cutscenes.errors
+  },
+  characters: {
+    data: characters.data,
+    status: mapCharactersDataStatus(characters.loading, characters.data),
+    errors: characters.errors
+  }
 });
+const mapCharactersDataStatus = (loading: boolean, data: Character[]) => {
+  let charactersStatus = DataStatus.PENDING;
+  if(loading) {
+    charactersStatus = DataStatus.LOADING;
+  } else if (data && data.length > 0) {
+    charactersStatus = DataStatus.READY;
+  }
+
+  return charactersStatus;
+};
 
 const mapDispatchToProps = (dispatch: Dispatch) => {
   const { fetchRequest, createRequest, updateRequest, deleteRequest } = Store;
@@ -81,7 +120,9 @@ const mapDispatchToProps = (dispatch: Dispatch) => {
     fetchRequest,
     createRequest,
     updateRequest,
-    deleteRequest
+    deleteRequest,
+
+    fetchCharactersRequest
   };
 
   return bindActionCreators(actions, dispatch);

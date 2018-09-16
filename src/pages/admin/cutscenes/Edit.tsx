@@ -6,10 +6,12 @@ import { Form, Props as FormProps } from "./_Form";
 
 import { DataStatus } from "../../../store/shared";
 import { Cutscene, updateRequest, deleteRequest } from "../../../store/admin/cutscenes";
+import { Character } from "../../../store/admin/characters";
 
 interface Props {
   data?: Cutscene,
   status: DataStatus,
+  characters: Character[],
   errors?: string,
   onSave: typeof updateRequest,
   onDelete?: typeof deleteRequest

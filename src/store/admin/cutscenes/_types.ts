@@ -5,18 +5,29 @@ export interface Cutscene extends ApiResponse {
   id: string
   name: string,
   description: string
-  dialogue: Dialogue[]
+  dialogue: Dialogue[],
+  trigger?: Trigger
 }
 export interface Dialogue {
+  characterId: string,
   imageUrl: string,
   position: Position,
   speaker: string,
   text: string[]
 }
-enum Position {
-  Left = "left",
-  Center = "center",
-  Right = "right"
+export enum Position {
+  LEFT = "left",
+  CENTER = "center",
+  RIGHT = "right"
+}
+export interface Trigger {
+  type: TriggerType,
+  level?: number,
+  questId?: string
+}
+export enum TriggerType {
+  QUEST_COMPLETE = "@@cutseneTriggers/QUEST_COMPLETE",
+  LEVEL_REACHED = "@@cutseneTriggers/LEVEL_REACHED"
 }
 
 export enum CutscenesActions {

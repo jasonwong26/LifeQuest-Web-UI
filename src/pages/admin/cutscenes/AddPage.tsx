@@ -9,11 +9,14 @@ export const AddPage: React.SFC = () => {
     <Page>
       <Container>
         {
-          ({ status, errors, createRequest }) => {
+          ({ cutscenes, characters, createRequest }) => {
+            const { status, errors } = cutscenes;
+
             return (
               <Add
                 status={status}
                 errors={errors}
+                characters={characters.data}
                 onSave={createRequest}
               />
             );

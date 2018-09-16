@@ -1,9 +1,12 @@
 import * as React from "react";
 
 import {TextInput, TextArea, SubmitButton} from "../../../components/forms";
+import { DialogueForm } from "./_DialogueForm";
 
 import { DataStatus } from "../../../store/shared";
-import { Cutscene, createRequest, updateRequest, deleteRequest } from "../../../store/admin/cutscenes";
+import { Cutscene, Dialogue, createRequest, updateRequest, deleteRequest } from "../../../store/admin/cutscenes";
+import { Character } from "../../../store/admin/characters";
+
 
 type saveRequest = typeof createRequest | typeof updateRequest;
 
@@ -11,6 +14,7 @@ export interface Props {
   data: Cutscene,
   status: DataStatus,
   errors?: string,
+  characters: Character[],
 
   onSave: saveRequest,
   onDelete?: typeof deleteRequest
@@ -43,14 +47,14 @@ export class Form extends React.Component<Props, State> {
     const saving = this.props.status === DataStatus.SAVING;
     const deleting = this.props.status === DataStatus.DELETING;
 
-    const { onDelete } = this.props;
+    const { characters, onDelete } = this.props;
     const showDelete = !!onDelete;
     const { data, errors } = this.state;
 
     return (
       <form
         onSubmit={this.onSave}>
-         <TextInput
+        <TextInput
            label="Name"
            name="name"
            onChange={this.onChange}
@@ -63,6 +67,21 @@ export class Form extends React.Component<Props, State> {
           value={data.description}
           error={errors.description} />
 
+        {
+          data.dialogue.map((dialogue, index) => (
+            <React.Fragment
+              key={index}>
+              <hr/>
+              <DialogueForm
+                index={index}
+                data={dialogue}
+                characters={characters}
+                showAdd={false}
+                onChange={this.onDialogueChange}
+                />
+            </React.Fragment>
+          ))
+        }
         <hr/>
         <div className="form-group">
           <SubmitButton
@@ -80,6 +99,26 @@ export class Form extends React.Component<Props, State> {
         </div>
       </form>
     );
+  }
+
+  private onDialogueChange = (index: number, dialogue: Dialogue) => {
+    const current = this.state.data.dialogue;
+
+    let updated = [];
+    if(current.length === 0) {
+      updated.push(dialogue);
+    } else {
+      updated = current.map((val, i) => {
+                  return i === index
+                    ? dialogue
+                    : val;
+                });
+    }
+
+    const change = { dialogue: updated };
+    const newState = Object.assign({}, this.state.data, change);
+
+    this.setState({ data: newState });
   }
 
   private onChange = (event: React.ChangeEvent<HTMLFormInput>) => {

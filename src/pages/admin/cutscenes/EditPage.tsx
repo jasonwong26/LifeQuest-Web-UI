@@ -16,7 +16,8 @@ export const EditPage: React.SFC<RouteComponentProps<RouteParams>> = ({ match })
     <Page>
       <Container>
         {
-          ({ data, status, errors, updateRequest, deleteRequest }) => {
+          ({ cutscenes, characters, updateRequest, deleteRequest }) => {
+            const { data, status, errors } = cutscenes;
             const selected = data.find(scene => scene.id === routeId);
 
             return (
@@ -24,6 +25,7 @@ export const EditPage: React.SFC<RouteComponentProps<RouteParams>> = ({ match })
                 data={selected}
                 status={status}
                 errors={errors}
+                characters={characters.data}
                 onSave={updateRequest}
                 onDelete={deleteRequest}
               />
