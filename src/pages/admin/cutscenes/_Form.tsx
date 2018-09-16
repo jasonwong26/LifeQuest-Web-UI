@@ -1,7 +1,8 @@
 import * as React from "react";
-
+import { Tabs, Tab } from "react-bootstrap";
 import {TextInput, TextArea, SubmitButton} from "../../../components/forms";
 import { DialogueForm } from "./_DialogueForm";
+import { DragTest } from "./_DragTest";
 
 import { DataStatus } from "../../../store/shared";
 import { Cutscene, Dialogue, createRequest, updateRequest, deleteRequest } from "../../../store/admin/cutscenes";
@@ -67,21 +68,35 @@ export class Form extends React.Component<Props, State> {
           value={data.description}
           error={errors.description} />
 
-        {
-          data.dialogue.map((dialogue, index) => (
-            <React.Fragment
-              key={index}>
-              <hr/>
-              <DialogueForm
-                index={index}
-                data={dialogue}
-                characters={characters}
-                showAdd={false}
-                onChange={this.onDialogueChange}
-                />
-            </React.Fragment>
-          ))
-        }
+        <Tabs
+          id="cutscene-form-tabs"
+          >
+          <Tab eventKey={1} title="Dialogue" className="gutter-top">
+            {
+              data.dialogue.map((dialogue, index) => (
+                <React.Fragment
+                  key={index}>
+                  {index > 0 && (
+                    <hr/>
+                  )}
+                  <DialogueForm
+                    index={index}
+                    data={dialogue}
+                    characters={characters}
+                    showAdd={false}
+                    onChange={this.onDialogueChange}
+                    />
+                </React.Fragment>
+              ))
+            }
+          </Tab>
+          <Tab eventKey={2} title="Trigger" className="gutter-top">
+            <div>temp value </div>
+          </Tab>
+          <Tab eventKey={3} title="Drag Test" className="gutter-top">
+            <DragTest />
+          </Tab>
+        </Tabs>
         <hr/>
         <div className="form-group">
           <SubmitButton

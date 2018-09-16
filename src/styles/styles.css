@@ -10,3 +10,66 @@
 .gutter-left-sm { margin-left: 5px; }
 .gutter-right-sm { margin-right: 5px; }
 .gutter-bottom-sm { margin-bottom: 5px; }
+
+
+/*** Cutscene Dialogue Editor ***/
+.dialogue-text-editor .text-entry {
+  padding: 5px;
+}
+.dialogue-text-editor .text-entry > div:last-of-type {
+  width: 100%;
+}
+.dialogue-text-editor .text-entry textarea.form-control {
+  width: 100%;
+  resize: vertical;
+}
+.dialogue-text-editor .text-entry:not(.active) .form-control {
+  background-color: transparent;
+  border-color: transparent;
+  color: inherit;
+  cursor: pointer;
+  resize: none;
+}
+
+.dialogue-text-editor .text-entry .text-entry-controls {
+  margin-top: 8px;
+}
+  .dialogue-text-editor .text-entry .text-entry-controls button:first-of-type {
+    margin-right: 8px;
+  }
+  .dialogue-text-editor .text-entry .text-entry-controls .close {
+    float: none;
+  }
+
+/* .task-entry {
+  display:flex;
+}
+  .task-entry > div {
+    display: inline-block;
+  }
+  .task-entry > div.checkbox-container {
+    padding-top: 8px;
+  }
+  .task-entry > div:last-of-type {
+    width: 100%;
+  }
+.task-entry textarea.form-control {
+  width: 100%;
+  resize: vertical;
+}
+.task-entry:not(.active) .form-control {
+  background-color: transparent;
+  border-color: transparent;
+  color: inherit;
+  cursor: pointer;
+  resize: none;
+}
+.task-entry .task-entry-controls {
+  margin-top: 8px;
+}
+  .task-entry .task-entry-controls button {
+    margin-right: 8px;
+  }
+  .task-entry .task-entry-controls .close {
+    float: none;
+  } */

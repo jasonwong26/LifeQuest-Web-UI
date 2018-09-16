@@ -1,6 +1,7 @@
 import * as React from "react";
 
-import { TextInput, TextArea, DropDownList } from "../../../components/forms";
+import { TextInput, DropDownList } from "../../../components/forms";
+import { TextEditor } from "./_TextEditor";
 
 import { Dialogue } from "../../../store/admin/cutscenes";
 import { Character } from "../../../store/admin/characters";
@@ -38,7 +39,9 @@ export class DialogueForm extends React.Component<Props, State> {
   public render() {
     const { characters } = this.props;
     const { data, selectedCharacter, errors } = this.state;
-    const text = data.text.join("\n\n");
+
+    // TODO: remove after testing
+    // const text = data.text.join("\n\n");
 
     const selectedImage = selectedCharacter
                        && selectedCharacter.images.find(img => img.url === data.imageUrl);
@@ -91,14 +94,11 @@ export class DialogueForm extends React.Component<Props, State> {
             value={data.speaker}
             error={errors.speaker}
             />
-          {/* placeholder for dialogue control */}
-          <TextArea
-            label="Text"
-            name="text"
+          <TextEditor
+            data={data.text}
             onChange={this.onTextChange}
-            value={text}
-            error={errors.text}
-            />
+          />
+
         </div>
         <div className="col-sm-2">
           { selectedImage && (
@@ -150,12 +150,20 @@ export class DialogueForm extends React.Component<Props, State> {
     }
   }
 
-  private onTextChange = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
-    const field = event.target.name;
-    const value = event.target.value;
-
-    const text = value.split("\n\n");
-    const change = { [field]: text };
+  // TODO: remove after testing
+  // private onTextChange = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
+  //   const field = event.target.name;
+  //   const value = event.target.value;
+  //
+  //   const text = value.split("\n\n");
+  //   const change = { [field]: text };
+  //
+  //   this.saveChanges<string[]>(change);
+  // }
+  private onTextChange = (newText: string[]) => {
+    const field = "text";
+    const value = newText;
+    const change = { [field]: value };
 
     this.saveChanges<string[]>(change);
   }
