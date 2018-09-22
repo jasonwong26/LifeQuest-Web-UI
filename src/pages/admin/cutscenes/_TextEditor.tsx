@@ -84,7 +84,7 @@ class TextEditor extends React.Component<Props, State> {
 
     this.setState({
       model: clone
-    });
+    }, this.saveChanges);
   }
 
   private onSelect = (id: string) => {
@@ -203,8 +203,8 @@ class TextEditor extends React.Component<Props, State> {
   }
 }
 
-const outsideAwareTextEditor = ClickOutside(TextEditor);
+const outsideAware = ClickOutside(TextEditor);
 
 export {
-  outsideAwareTextEditor as TextEditor
+  outsideAware as TextEditor
 };

@@ -159,16 +159,6 @@ export class DialogueForm extends React.Component<Props, State> {
     }
   }
 
-  // TODO: remove after testing
-  // private onTextChange = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
-  //   const field = event.target.name;
-  //   const value = event.target.value;
-  //
-  //   const text = value.split("\n\n");
-  //   const change = { [field]: text };
-  //
-  //   this.saveChanges<string[]>(change);
-  // }
   private onTextChange = (newText: string[]) => {
     const field = "text";
     const value = newText;

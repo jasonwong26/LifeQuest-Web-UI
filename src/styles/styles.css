@@ -11,6 +11,21 @@
 .gutter-right-sm { margin-right: 5px; }
 .gutter-bottom-sm { margin-bottom: 5px; }
 
+/*** CutScene Modal ***/
+div.scene-container:focus {
+    outline: none;
+}
+  div.scene-container img {
+    height: 300px;
+  }
+  div.scene-container h4 {
+    padding-bottom: 5px;
+    border-bottom: 1px solid #1c1e22
+  }
+  div.scene-container div.scene-text {
+    min-height: 3em;
+  }
+
 
 /*** Cutscene Dialogue Editor ***/
 .dialogue-text-editor .text-entry {

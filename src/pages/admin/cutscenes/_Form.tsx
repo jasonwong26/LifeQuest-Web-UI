@@ -1,13 +1,13 @@
 import * as React from "react";
-import { Tabs, Tab } from "react-bootstrap";
-import {TextInput, TextArea, SubmitButton} from "../../../components/forms";
+import { Tabs, Tab, SelectCallback } from "react-bootstrap";
+
+import { TextInput, TextArea, SubmitButton } from "../../../components/forms";
 import { DialogueForm } from "./_DialogueForm";
-import { DragTest } from "./_DragTest";
+import { ScenePreview } from "./_ScenePreview";
 
 import { DataStatus } from "../../../store/shared";
 import { Cutscene, Dialogue, createRequest, updateRequest, deleteRequest } from "../../../store/admin/cutscenes";
 import { Character } from "../../../store/admin/characters";
-
 
 type saveRequest = typeof createRequest | typeof updateRequest;
 
@@ -23,7 +23,14 @@ export interface Props {
 
 interface State {
   data: Cutscene,
-  errors: any
+  errors: any,
+  showPreview: boolean
+}
+
+enum FormTabs {
+  DialogueEditor = 1,
+  TriggerEditor = 2,
+  ScenePreview = 3
 }
 
 type HTMLFormInput = HTMLInputElement | HTMLTextAreaElement;
@@ -34,86 +41,23 @@ export class Form extends React.Component<Props, State> {
 
     this.state = {
       data: props.data,
-      errors: {}
+      errors: {},
+      showPreview: false
     };
   }
 
   public componentWillReceiveProps(nextProps: Props) {
     if (this.props.data.id !== nextProps.data.id) {
-      this.setState({data: Object.assign({}, nextProps.data)});
+      const newState = { data: { ...nextProps.data } };
+      this.setState(newState);
     }
   }
 
-  public render() {
-    const saving = this.props.status === DataStatus.SAVING;
-    const deleting = this.props.status === DataStatus.DELETING;
+  private onTabChange: SelectCallback = (eventKey: any) => {
+    const currentTab = eventKey as FormTabs;
+    const showPreview = currentTab === FormTabs.ScenePreview;
 
-    const { characters, onDelete } = this.props;
-    const showDelete = !!onDelete;
-    const { data, errors } = this.state;
-
-    return (
-      <form
-        onSubmit={this.onSave}>
-        <TextInput
-           label="Name"
-           name="name"
-           onChange={this.onChange}
-           value={data.name}
-           error={errors.name} />
-        <TextArea
-          label="Description"
-          name="description"
-          onChange={this.onChange}
-          value={data.description}
-          error={errors.description} />
-
-        <Tabs
-          id="cutscene-form-tabs"
-          >
-          <Tab eventKey={1} title="Dialogue" className="gutter-top">
-            {
-              data.dialogue.map((dialogue, index) => (
-                <React.Fragment
-                  key={index}>
-                  {index > 0 && (
-                    <hr/>
-                  )}
-                  <DialogueForm
-                    index={index}
-                    data={dialogue}
-                    characters={characters}
-                    showAdd={false}
-                    onChange={this.onDialogueChange}
-                    />
-                </React.Fragment>
-              ))
-            }
-          </Tab>
-          <Tab eventKey={2} title="Trigger" className="gutter-top">
-            <div>temp value </div>
-          </Tab>
-          <Tab eventKey={3} title="Drag Test" className="gutter-top">
-            <DragTest />
-          </Tab>
-        </Tabs>
-        <hr/>
-        <div className="form-group">
-          <SubmitButton
-            value={saving ? "Saving" : "Save"}
-            disabled={saving} />
-          {showDelete && (
-            <button
-              className="btn btn-danger gutter-left"
-              onClick={this.onDelete}
-              title="Delete"
-              disabled={deleting}>
-              {deleting ? "Deleting" : "Delete"}
-            </button>
-          )}
-        </div>
-      </form>
-    );
+    this.setState({ showPreview });
   }
 
   private onDialogueChange = (index: number, dialogue: Dialogue) => {
@@ -189,5 +133,77 @@ export class Form extends React.Component<Props, State> {
     if(deleteFunc) {
       deleteFunc(toDelete);
     }
+  }
+
+  public render() {
+    const saving = this.props.status === DataStatus.SAVING;
+    const deleting = this.props.status === DataStatus.DELETING;
+
+    const { characters, onDelete } = this.props;
+    const showDelete = !!onDelete;
+    const { data, errors, showPreview } = this.state;
+
+    return (
+      <form
+        onSubmit={this.onSave}>
+        <TextInput
+           label="Name"
+           name="name"
+           onChange={this.onChange}
+           value={data.name}
+           error={errors.name} />
+        <TextArea
+          label="Description"
+          name="description"
+          onChange={this.onChange}
+          value={data.description}
+          error={errors.description} />
+
+        <Tabs
+          id="cutscene-form-tabs"
+          onSelect={this.onTabChange} >
+          <Tab eventKey={FormTabs.DialogueEditor} title="Dialogue" className="gutter-top">
+            {
+              data.dialogue.map((dialogue, index) => (
+                <React.Fragment
+                  key={index}>
+                  {index > 0 && (
+                    <hr/>
+                  )}
+                  <DialogueForm
+                    index={index}
+                    data={dialogue}
+                    characters={characters}
+                    showAdd={false}
+                    onChange={this.onDialogueChange}
+                    />
+                </React.Fragment>
+              ))
+            }
+          </Tab>
+          <Tab eventKey={FormTabs.TriggerEditor} title="Trigger" className="gutter-top">
+            <div>temp value </div>
+          </Tab>
+          <Tab eventKey={FormTabs.ScenePreview} title="Preview" className="gutter-top">
+            <ScenePreview scene={data} showModal={showPreview} />
+          </Tab>
+        </Tabs>
+        <hr/>
+        <div className="form-group">
+          <SubmitButton
+            value={saving ? "Saving" : "Save"}
+            disabled={saving} />
+          {showDelete && (
+            <button
+              className="btn btn-danger gutter-left"
+              onClick={this.onDelete}
+              title="Delete"
+              disabled={deleting}>
+              {deleting ? "Deleting" : "Delete"}
+            </button>
+          )}
+        </div>
+      </form>
+    );
   }
 }
