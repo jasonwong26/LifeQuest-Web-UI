@@ -1,12 +1,13 @@
 import * as React from "react";
 import { Tabs, Tab, SelectCallback } from "react-bootstrap";
 
-import { TextInput, TextArea, SubmitButton } from "../../../components/forms";
+import { TextInput, DropDownList, TextArea, SubmitButton } from "../../../components/forms";
 import { DialogueForm } from "./_DialogueForm";
+import { TriggerForm } from "./_TriggerForm";
 import { ScenePreview } from "./_ScenePreview";
 
 import { DataStatus } from "../../../store/shared";
-import { Cutscene, Dialogue, createRequest, updateRequest, deleteRequest } from "../../../store/admin/cutscenes";
+import { Cutscene, CutsceneCategory, Dialogue, Trigger, createRequest, updateRequest, deleteRequest } from "../../../store/admin/cutscenes";
 import { Character } from "../../../store/admin/characters";
 
 type saveRequest = typeof createRequest | typeof updateRequest;
@@ -33,7 +34,13 @@ enum FormTabs {
   ScenePreview = 3
 }
 
-type HTMLFormInput = HTMLInputElement | HTMLTextAreaElement;
+type HTMLFormInput = HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement;
+
+const categoryOptions = [
+  { text: "Demo", value: CutsceneCategory.DEMO },
+  { text: "Tutorial", value: CutsceneCategory.TUTORIAL },
+  { text: "Normal", value: CutsceneCategory.NORMAL }
+];
 
 export class Form extends React.Component<Props, State> {
   constructor(props: Props) {
@@ -79,7 +86,12 @@ export class Form extends React.Component<Props, State> {
 
     this.setState({ data: newState });
   }
+  private onTriggerChange = (trigger: Trigger) => {
+    const change = { trigger };
+    const newState = Object.assign({}, this.state.data, change);
 
+    this.setState({ data: newState });
+  }
   private onChange = (event: React.ChangeEvent<HTMLFormInput>) => {
     const field = event.target.name;
     const value = event.target.value;
@@ -103,15 +115,19 @@ export class Form extends React.Component<Props, State> {
     const errors: {[key: string]: string} = {};
 
     if(!data.id || data.id.length === 0) {
-      errors.id = "You must specify the unique identifer for the Character";
+      errors.id = "You must specify the unique identifer for the Cutscene";
     }
 
     if(!data.name || data.name.length === 0) {
-      errors.name = "You must specify the name for the Character";
+      errors.name = "You must specify the name for the Cutscene";
+    }
+
+    if (!data.category) {
+      errors.category = "You must specify the category for the Cutscene";
     }
 
     if(!data.description || data.description.length === 0) {
-      errors.description = "You must specify a description for the Character";
+      errors.description = "You must specify a description for the Cutscene";
     }
 
     this.setState({ errors });
@@ -152,7 +168,24 @@ export class Form extends React.Component<Props, State> {
            onChange={this.onChange}
            value={data.name}
            error={errors.name} />
+         <DropDownList
+           label="Category"
+           name="category"
+           onChange={this.onChange}
+           options={
+             categoryOptions.map(type => {
+               return {
+                 text: type.text,
+                 value: type.value
+               };
+             })
+           }
+           defaultEmpty
+           value={data.category}
+           error={errors.category}
+          />
         <TextArea
+          key="blarghe"
           label="Description"
           name="description"
           onChange={this.onChange}
@@ -182,7 +215,7 @@ export class Form extends React.Component<Props, State> {
             }
           </Tab>
           <Tab eventKey={FormTabs.TriggerEditor} title="Trigger" className="gutter-top">
-            <div>temp value </div>
+            <TriggerForm data={data.trigger} onChange={this.onTriggerChange} />
           </Tab>
           <Tab eventKey={FormTabs.ScenePreview} title="Preview" className="gutter-top">
             <ScenePreview scene={data} showModal={showPreview} />

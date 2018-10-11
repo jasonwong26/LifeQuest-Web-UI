@@ -7,7 +7,7 @@ interface PropsFromParent {
   onClose: () => void
 }
 interface ManagedProps {
-  sceneContainer: React.Ref<HTMLDivElement>,
+  sceneContainer: React.RefObject<HTMLDivElement>,
   title: string,
   imageUrl: string,
   speaker: string,
@@ -39,21 +39,6 @@ export class Container extends React.Component<AllProps, State> {
 
     this.state = model;
     this.sceneContainer = React.createRef();
-  }
-
-  public componentDidMount() {
-    this.autoFocus();
-  }
-
-  public componentDidUpdate() {
-    this.autoFocus();
-  }
-  private autoFocus = () => {
-    const node = this.sceneContainer.current;
-
-    if(node) {
-      node.focus();
-    }
   }
 
   public componentWillReceiveProps(nextProps: AllProps) {

@@ -1,7 +1,7 @@
 import * as React from "react";
 
 interface Props {
-  sceneContainer: React.Ref<HTMLDivElement>,
+  sceneContainer: React.RefObject<HTMLDivElement>,
   imageUrl: string,
   speaker: string,
   text: string,
@@ -19,6 +19,11 @@ export const Layout: React.SFC<Props> = ({ sceneContainer, imageUrl, speaker, te
       moveNext();
     }
   };
+
+  const node = sceneContainer.current;
+  if(node) {
+    node.focus();
+  }
 
   return (
     <div

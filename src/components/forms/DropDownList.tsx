@@ -38,7 +38,7 @@ export const DropDownList: React.SFC<Props> = ({ name, label, onChange, options,
           })
           }
         </select>
-        {error && <div className="alert alert-danger">{error}</div>}
+        {error && <small className="text-danger">{error}</small>}
       </div>
     </div>
   );

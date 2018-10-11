@@ -28,7 +28,7 @@ export class ScenePreview extends React.Component<Props, State> {
     }
   }
 
-  public dispayModal = () => {
+  public displayModal = () => {
     this.setState({ showModal: true });
   }
   public hideModal = () => {
@@ -45,7 +45,7 @@ export class ScenePreview extends React.Component<Props, State> {
           <CutscenesModal scene={scene} onClose={this.hideModal} />
         )}
 
-        <button className="btn btn-default" onClick={this.dispayModal}>
+        <button type="button" className="btn btn-default" onClick={this.displayModal}>
           <span className="glyphicon glyphicon-repeat" aria-hidden="true" /> Replay
         </button>
       </div>

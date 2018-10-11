@@ -5,7 +5,7 @@ import LoadingBar from "../../../components/layout/LoadingBar";
 import { Form, Props as FormProps } from "./_Form";
 
 import { DataStatus } from "../../../store/shared";
-import { Cutscene, Dialogue, Position, createRequest } from "../../../store/admin/cutscenes";
+import { Cutscene, CutsceneCategory, Dialogue, Trigger, TriggerType, Position, createRequest } from "../../../store/admin/cutscenes";
 import { Character } from "../../../store/admin/characters";
 
 interface Props {
@@ -15,6 +15,7 @@ interface Props {
   onSave: typeof createRequest,
 }
 
+
 const dialogueTemplate : Dialogue = {
   characterId: "",
   imageUrl: "",
@@ -22,11 +23,16 @@ const dialogueTemplate : Dialogue = {
   position: Position.CENTER,
   text:[""]
 };
+const triggerTemplate : Trigger = {
+  type: TriggerType.NONE
+};
 const sceneTemplate : Cutscene = {
   id: "New",
   name: "",
+  category: CutsceneCategory.DEMO,
   description: "",
   dialogue: [{ ...dialogueTemplate }],
+  trigger: { ...triggerTemplate },
   created: 0,
   lastUpdated: 0
 };

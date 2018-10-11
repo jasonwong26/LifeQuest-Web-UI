@@ -31,7 +31,7 @@ export const List: React.SFC<Props> = ({ status, data }) => {
         <DataTable columns={["Cutscene"]}>
           {loading && data.length === 0 && (
             <tr>
-              <td  colSpan={2}>
+              <td>
                 <LoadingBar loading={loading} />
               </td>
             </tr>

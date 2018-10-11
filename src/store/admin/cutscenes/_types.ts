@@ -4,9 +4,10 @@ import { ApiResponse } from "../../../utility/callApi";
 export interface Cutscene extends ApiResponse {
   id: string
   name: string,
+  category: CutsceneCategory,
   description: string
   dialogue: Dialogue[],
-  trigger?: Trigger
+  trigger: Trigger
 }
 export interface Dialogue {
   characterId: string,
@@ -20,14 +21,25 @@ export enum Position {
   CENTER = "center",
   RIGHT = "right"
 }
+
 export interface Trigger {
-  type: TriggerType,
-  level?: number,
-  questId?: string
+  type: TriggerType
+  level?: number
+  quests?: number
 }
+
+export enum CutsceneCategory {
+  DEMO = "Demo",
+  TUTORIAL = "Tutorial",
+  NORMAL = "Normal"
+}
+
 export enum TriggerType {
-  QUEST_COMPLETE = "@@cutseneTriggers/QUEST_COMPLETE",
-  LEVEL_REACHED = "@@cutseneTriggers/LEVEL_REACHED"
+  NONE = "NONE",                               // Not implmemented stub
+  DEMO_START = "DEMO_START",                   // on Demo start
+  DEMO_END = "DEMO_END",                       // on Demo end
+  QUESTS_COMPLETED = "QUESTS_COMPLETED",       // # of quests completed
+  LEVEL_REACHED = "LEVEL_REACHED"              // X Level attained
 }
 
 export enum CutscenesActions {

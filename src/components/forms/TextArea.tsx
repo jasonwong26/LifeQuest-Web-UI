@@ -19,15 +19,15 @@ export const TextArea: React.SFC<Props> = ({ name, autoFocus, onChange, onKeyPre
     wrapperClass += " has-error";
   }
 
-  const Wrapper: React.SFC = ({children}) => (
-    <div className={wrapperClass}>
-      <label htmlFor={name}>{label}</label>
-      {children}
-      {error && <small className="text-danger">{error}</small>}
-    </div>
-  );
+  // const Wrapper: React.SFC = ({children}) => (
+  //   <div className={wrapperClass}>
+  //     <label htmlFor={name}>{label}</label>
+  //     {children}
+  //     {error && <small className="text-danger">{error}</small>}
+  //   </div>
+  // );
 
-  const Input: React.SFC = () => (
+  const editor = (
     <textarea
       autoFocus={autoFocus}
       name={name}
@@ -41,14 +41,14 @@ export const TextArea: React.SFC<Props> = ({ name, autoFocus, onChange, onKeyPre
   );
 
   if(!label) {
-    return (
-      <Input />
-    );
+    return editor;
   }
 
   return (
-    <Wrapper>
-      <Input />
-    </Wrapper>
+    <div className={wrapperClass}>
+      <label htmlFor={name}>{label}</label>
+      {editor}
+      {error && <small className="text-danger">{error}</small>}
+    </div>
   );
 };

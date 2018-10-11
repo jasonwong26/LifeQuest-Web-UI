@@ -156,7 +156,7 @@ export class Form extends React.Component<FormProps, State> {
                     : val;
                 });
     }
-      
+
     const change = { images: updated };
     const newState = Object.assign({}, this.state.data, change);
 
