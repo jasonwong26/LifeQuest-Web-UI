@@ -1,36 +1,36 @@
 import { Reducer } from "redux";
 import { DataStatus } from "../../shared";
-import { Cutscene, CutscenesState, CutscenesActions } from "./_types";
+import { Quest, QuestsState, QuestsActions } from "./_types";
 
-export const initialState: CutscenesState = {
+export const initialState: QuestsState = {
   data: [],
   status: DataStatus.PENDING,
   errors: undefined
 };
 
-export const reducer: Reducer<CutscenesState> = (state = initialState, action) => {
+export const reducer: Reducer<QuestsState> = (state = initialState, action) => {
   switch (action.type) {
-    case CutscenesActions.FETCH_REQUEST: {
+    case QuestsActions.FETCH_REQUEST: {
       return { ...state, status: DataStatus.LOADING };
     }
-    case CutscenesActions.FETCH_SUCCESS: {
+    case QuestsActions.FETCH_SUCCESS: {
       return { ...state, status: DataStatus.READY, data: action.payload };
     }
 
-    case CutscenesActions.CREATE_REQUEST:
-    case CutscenesActions.UPDATE_REQUEST: {
+    case QuestsActions.CREATE_REQUEST:
+    case QuestsActions.UPDATE_REQUEST: {
       return {...state, status: DataStatus.SAVING };
     }
 
-    case CutscenesActions.CREATE_SUCCESS: {
-      const newChar: Cutscene = action.payload;
-      const newState  = [...state.data, newChar];
+    case QuestsActions.CREATE_SUCCESS: {
+      const created: Quest = action.payload;
+      const newState  = [...state.data, created];
 
       return { ...state, status: DataStatus.READY, data: newState };
     }
 
-    case CutscenesActions.UPDATE_SUCCESS: {
-      const updated: Cutscene = action.payload;
+    case QuestsActions.UPDATE_SUCCESS: {
+      const updated: Quest = action.payload;
       const newState  = state.data.map(current => {
         return current.id === updated.id
           ? updated
@@ -40,12 +40,12 @@ export const reducer: Reducer<CutscenesState> = (state = initialState, action) =
       return { ...state, status: DataStatus.READY, data: newState };
     }
 
-    case CutscenesActions.DELETE_REQUEST: {
+    case QuestsActions.DELETE_REQUEST: {
       return {...state, status: DataStatus.DELETING };
     }
 
-    case CutscenesActions.DELETE_SUCCESS: {
-      const deleted: Cutscene = action.payload;
+    case QuestsActions.DELETE_SUCCESS: {
+      const deleted: Quest = action.payload;
       const newState  = state.data.filter(current => {
         return current.id !== deleted.id;
       });
@@ -53,10 +53,10 @@ export const reducer: Reducer<CutscenesState> = (state = initialState, action) =
       return { ...state, status: DataStatus.READY, data: newState };
     }
 
-    case CutscenesActions.FETCH_ERROR:
-    case CutscenesActions.CREATE_ERROR:
-    case CutscenesActions.UPDATE_ERROR:
-    case CutscenesActions.DELETE_ERROR: {
+    case QuestsActions.FETCH_ERROR:
+    case QuestsActions.CREATE_ERROR:
+    case QuestsActions.UPDATE_ERROR:
+    case QuestsActions.DELETE_ERROR: {
       return { ...state, status: DataStatus.READY, errors: action.payload };
     }
 

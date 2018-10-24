@@ -127,10 +127,3 @@ export class TriggerForm extends React.Component<Props, State> {
     );
   }
 }
-
-/*
-  TODO:
-  - add NumberInput component
-  - finish form
-  - update API
-*/

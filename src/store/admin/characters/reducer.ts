@@ -1,7 +1,7 @@
 import { Reducer } from "redux";
 import { Character, CharactersState, CharactersActions } from "./_types";
 
-const initialState: CharactersState = {
+export const initialState: CharactersState = {
   data: [],
   errors: undefined,
   loading: false,
@@ -9,7 +9,7 @@ const initialState: CharactersState = {
   deleting: false
 };
 
-const reducer: Reducer<CharactersState> = (state = initialState, action) => {
+export const reducer: Reducer<CharactersState> = (state = initialState, action) => {
   switch (action.type) {
     case CharactersActions.FETCH_REQUEST: {
       return { ...state, loading: true };
@@ -57,7 +57,7 @@ const reducer: Reducer<CharactersState> = (state = initialState, action) => {
     case CharactersActions.DELETE_SUCCESS: {
       const deleted: Character = action.payload;
       const newState  = state.data.filter(current => {
-        return current.id === deleted.id;
+        return current.id !== deleted.id;
       });
 
       return { ...state, deleting: false, data: newState };
@@ -71,9 +71,4 @@ const reducer: Reducer<CharactersState> = (state = initialState, action) => {
       return state;
     }
   }
-};
-
-export {
-  initialState as initialCharactersState,
-  reducer as charactersReducer
 };

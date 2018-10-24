@@ -2,15 +2,15 @@ import { call, put, takeEvery, takeLatest } from "redux-saga/effects";
 
 import { callApi } from "../../../utility/callApi";
 import { PayloadAction } from "../../shared";
-import { Character, CharactersActions } from "./_types";
+
+import { Quest, QuestsActions } from "./_types";
 import * as Actions from "./actions";
 
 const API_HOST = process.env.REACT_APP_API || "";
 
 function* handleFetch() {
   try {
-    // To call async functions, use redux-saga's `call()`.
-    const res = yield call(callApi, "get", API_HOST, "/admin/characters");
+    const res = yield call(callApi, "get", API_HOST, "/admin/quests");
 
     if (!res.error) {
       yield put(Actions.fetchSuccess(res));
@@ -26,11 +26,10 @@ function* handleFetch() {
   }
 }
 
-function* handleCreate(action: PayloadAction<Character>) {
+function* handleCreate(action: PayloadAction<Quest>) {
   try {
-    const character = action.payload;
-    // To call async functions, use redux-saga's `call()`.
-    const res = yield call(callApi, "post", API_HOST, `/admin/characters/`, character);
+    const data = action.payload;
+    const res = yield call(callApi, "post", API_HOST, `/admin/quests/`, data);
 
     if (!res.error) {
       yield put(Actions.createSuccess(res));
@@ -46,11 +45,10 @@ function* handleCreate(action: PayloadAction<Character>) {
   }
 }
 
-function* handleUpdate(action: PayloadAction<Character>) {
+function* handleUpdate(action: PayloadAction<Quest>) {
   try {
-    const character = action.payload;
-    // To call async functions, use redux-saga's `call()`.
-    const res = yield call(callApi, "put", API_HOST, `/admin/characters/${character.id}`, character);
+    const data = action.payload;
+    const res = yield call(callApi, "put", API_HOST, `/admin/quests/${data.id}`, data);
 
     if (!res.error) {
       yield put(Actions.updateSuccess(res));
@@ -66,14 +64,14 @@ function* handleUpdate(action: PayloadAction<Character>) {
   }
 }
 
-function* handleDelete(action: PayloadAction<Character>) {
+function* handleDelete(action: PayloadAction<Quest>) {
   try {
-    const character = action.payload;
+    const data = action.payload;
     // To call async functions, use redux-saga's `call()`.
-    const res = yield call(callApi, "delete", API_HOST, `/admin/characters/${character.id}`, character);
+    const res = yield call(callApi, "delete", API_HOST, `/admin/quests/${data.id}`, data);
 
     if (!res.error) {
-      yield put(Actions.deleteSuccess(character));
+      yield put(Actions.deleteSuccess(data));
     } else {
       yield put(Actions.deleteError(res.error));
     }
@@ -87,8 +85,8 @@ function* handleDelete(action: PayloadAction<Character>) {
 }
 
 export const sagas = [
-  takeEvery(CharactersActions.FETCH_REQUEST, handleFetch),
-  takeLatest(CharactersActions.CREATE_REQUEST, handleCreate),
-  takeLatest(CharactersActions.UPDATE_REQUEST, handleUpdate),
-  takeLatest(CharactersActions.DELETE_REQUEST, handleDelete)
+  takeEvery(QuestsActions.FETCH_REQUEST, handleFetch),
+  takeLatest(QuestsActions.CREATE_REQUEST, handleCreate),
+  takeLatest(QuestsActions.UPDATE_REQUEST, handleUpdate),
+  takeLatest(QuestsActions.DELETE_REQUEST, handleDelete)
 ];

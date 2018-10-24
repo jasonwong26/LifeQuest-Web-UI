@@ -4,6 +4,7 @@ import { RouteComponentProps, Route, Switch } from "react-router-dom";
 import HomePage from "./Home";
 import {CharacterRoutes} from "./characters";
 import {CutsceneRoutes} from "./cutscenes";
+import {QuestRoutes} from "./quests";
 import NotFoundPage from "../NotFound";
 
 class AdminPage extends React.Component<RouteComponentProps<{}>> {
@@ -15,6 +16,7 @@ class AdminPage extends React.Component<RouteComponentProps<{}>> {
         <Route exact path={match.path} component={HomePage} />
         <Route path={match.path + "/characters"} component={CharacterRoutes} />
         <Route path={match.path + "/cutscenes"} component={CutsceneRoutes} />
+        <Route path={match.path + "/quests"} component={QuestRoutes} />
         <Route component={NotFoundPage} />
       </Switch>
     );
