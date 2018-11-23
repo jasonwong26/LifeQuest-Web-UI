@@ -23,6 +23,8 @@
     "deploy": "npm run build && aws s3 sync build/ s3://lifequest-web-ui"
   },
   "dependencies": {
+    "@types/auth0-js": "^8.11.6",
+    "@types/jwt-decode": "^2.2.1",
     "@types/react-beautiful-dnd": "^7.1.2",
     "@types/react-bootstrap": "^0.32.11",
     "@types/react-click-outside": "^3.0.2",
@@ -31,8 +33,10 @@
     "@types/react-router-dom": "^4.3.0",
     "@types/shortid": "0.0.29",
     "@types/toastr": "^2.1.35",
+    "auth0-js": "^9.8.1",
     "bootstrap": "^3.3.6",
     "connected-react-router": "^4.4.1",
+    "jwt-decode": "^2.2.0",
     "react": "^16.4.2",
     "react-beautiful-dnd": "^9.0.2",
     "react-bootstrap": "^0.32.3",

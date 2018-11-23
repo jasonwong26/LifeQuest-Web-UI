@@ -1,8 +1,8 @@
-import { call, put, takeEvery, takeLatest } from "redux-saga/effects";
+import { call, put, select, takeEvery, takeLatest } from "redux-saga/effects";
 
 import { callApi } from "../../../utility/callApi";
 import { PayloadAction } from "../../shared";
-
+import { authTokenSelector } from "../../root";
 import { Quest, QuestsActions } from "./_types";
 import * as Actions from "./actions";
 
@@ -10,7 +10,8 @@ const API_HOST = process.env.REACT_APP_API || "";
 
 function* handleFetch() {
   try {
-    const res = yield call(callApi, "get", API_HOST, "/admin/quests");
+    const token = yield select(authTokenSelector);
+    const res = yield call(callApi, "get", API_HOST, "/admin/quests", null, token);
 
     if (!res.error) {
       yield put(Actions.fetchSuccess(res));
@@ -29,7 +30,8 @@ function* handleFetch() {
 function* handleCreate(action: PayloadAction<Quest>) {
   try {
     const data = action.payload;
-    const res = yield call(callApi, "post", API_HOST, `/admin/quests/`, data);
+    const token = yield select(authTokenSelector);
+    const res = yield call(callApi, "post", API_HOST, `/admin/quests/`, data, token);
 
     if (!res.error) {
       yield put(Actions.createSuccess(res));
@@ -48,7 +50,8 @@ function* handleCreate(action: PayloadAction<Quest>) {
 function* handleUpdate(action: PayloadAction<Quest>) {
   try {
     const data = action.payload;
-    const res = yield call(callApi, "put", API_HOST, `/admin/quests/${data.id}`, data);
+    const token = yield select(authTokenSelector);
+    const res = yield call(callApi, "put", API_HOST, `/admin/quests/${data.id}`, data, token);
 
     if (!res.error) {
       yield put(Actions.updateSuccess(res));
@@ -67,8 +70,8 @@ function* handleUpdate(action: PayloadAction<Quest>) {
 function* handleDelete(action: PayloadAction<Quest>) {
   try {
     const data = action.payload;
-    // To call async functions, use redux-saga's `call()`.
-    const res = yield call(callApi, "delete", API_HOST, `/admin/quests/${data.id}`, data);
+    const token = yield select(authTokenSelector);
+    const res = yield call(callApi, "delete", API_HOST, `/admin/quests/${data.id}`, data, token);
 
     if (!res.error) {
       yield put(Actions.deleteSuccess(data));

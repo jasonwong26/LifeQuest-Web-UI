@@ -71,10 +71,10 @@ export const Add: React.SFC<Props> = ({ status, ...rest }) => {
   );
 };
 
-const renderScene: React.SFC<FormProps> = ({data, status, characters, onSave}) => {
+const renderScene: React.SFC<FormProps> = props => {
   return (
     <React.Fragment>
-      <Form data={data} status={status} characters={characters} onSave={onSave} />
+      <Form {...props} />
     </React.Fragment>
   );
 };

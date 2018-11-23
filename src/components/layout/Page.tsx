@@ -1,8 +1,18 @@
 import * as React from "react";
 
-// Layout object for wrapping div for individual web pages
+import {Container} from "../../containers/auth/Container";
+
 const Page: React.SFC = ({ children }) => (
-  <div className="container">{children}</div>
+  <Container>
+    {({initialized, refreshSession}) => {
+      if (!initialized) {
+        refreshSession();
+      }
+      return (
+        <div className="container">{children}</div>
+      );
+    }}
+  </Container>
 );
 
 export default Page;

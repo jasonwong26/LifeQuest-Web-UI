@@ -1,5 +1,5 @@
 import * as React from "react";
-import { Tabs, Tab, SelectCallback } from "react-bootstrap";
+import { Alert, Tabs, Tab, SelectCallback } from "react-bootstrap";
 
 import { TextInput, DropDownList, TextArea, SubmitButton } from "../../../components/forms";
 import { DialogueForm } from "./_DialogueForm";
@@ -17,7 +17,6 @@ export interface Props {
   status: DataStatus,
   errors?: string,
   characters: Character[],
-
   onSave: saveRequest,
   onDelete?: typeof deleteRequest
 }
@@ -155,7 +154,7 @@ export class Form extends React.Component<Props, State> {
     const saving = this.props.status === DataStatus.SAVING;
     const deleting = this.props.status === DataStatus.DELETING;
 
-    const { characters, onDelete } = this.props;
+    const { characters, onDelete, errors: storeError } = this.props;
     const showDelete = !!onDelete;
     const { data, errors, showPreview } = this.state;
 
@@ -236,6 +235,11 @@ export class Form extends React.Component<Props, State> {
             </button>
           )}
         </div>
+        { storeError && (
+          <Alert bsStyle="danger">
+            An error occurred saving your changes.  Please retry...
+          </Alert>
+        )}
       </form>
     );
   }

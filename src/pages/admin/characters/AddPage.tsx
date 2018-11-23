@@ -17,10 +17,11 @@ const AddPage: React.SFC<RouteComponentProps<RouteParams>> = ({ history }) => {
   return (
     <Page>
       <Container onSave={navToList}>
-        {({ loading, saving, createRequest }) => (
+        {({ loading, saving, errors, createRequest }) => (
             <Add
               loading={loading}
               saving={saving}
+              errors={errors}
               onSave={createRequest} />
         )}
       </Container>

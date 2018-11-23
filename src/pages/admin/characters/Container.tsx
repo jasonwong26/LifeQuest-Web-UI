@@ -27,7 +27,7 @@ type ContainerProps = PropsFromState &
                       PropsFromParent;
 
 interface OtherProps {
- children: (props: ContainerProps) => React.ReactNode
+  children: (props: ContainerProps) => React.ReactNode
 }
 
 type AllProps = ContainerProps & OtherProps;
@@ -59,14 +59,16 @@ class Container extends React.Component<AllProps, State> {
   }
 
   public componentWillReceiveProps(nextProps: AllProps) {
-    const { saving, deleting } = nextProps;
+    const { saving, deleting, errors } = nextProps;
     const newState = {
       saving,
       deleting
     };
 
-    this.navAfterSave(newState);
-    this.navAfterDelete(newState);
+    if (!errors) {
+      this.navAfterSave(newState);
+      this.navAfterDelete(newState);
+    }
 
     this.setState(newState);
   }

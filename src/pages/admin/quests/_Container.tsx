@@ -68,10 +68,11 @@ class Container extends React.Component<AllProps, State> {
         || status === DataStatus.DELETING;
   }
   private shouldRedirect = () : boolean => {
+    const hasStoreError = !!this.props.errors;
     const performRedirect = this.props.redirectAfterSave || false;
     const { wasSaving } = this.state;
 
-    return performRedirect && wasSaving;
+    return wasSaving && !hasStoreError && performRedirect;
   }
 
   public render() {

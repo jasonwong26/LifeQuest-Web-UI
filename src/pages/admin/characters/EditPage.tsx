@@ -18,7 +18,7 @@ const EditPage: React.SFC<RouteComponentProps<RouteParams>> = ({ history, match 
   return (
     <Page>
       <Container onSave={navToList} onDelete={navToList}>
-        {({ data, loading, saving, deleting, updateRequest, deleteRequest }) => {
+        {({ data, errors, loading, saving, deleting, updateRequest, deleteRequest }) => {
           const selected = data.find(character => character.id === routeId);
 
           return (
@@ -27,6 +27,7 @@ const EditPage: React.SFC<RouteComponentProps<RouteParams>> = ({ history, match 
               saving={saving}
               deleting={deleting}
               data={selected}
+              errors={errors}
               onSave={updateRequest}
               onDelete={deleteRequest} />
         );

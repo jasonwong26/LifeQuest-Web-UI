@@ -1,13 +1,31 @@
 
 export type ApiResponse = Record<string, any>;
 
-export function callApi(method: string, url: string, path: string, data?: any) {
-  return fetch(url + path, {
+export function callApi(method: string, url: string, path: string, data?: any, token?: string) {
+  const headers: HeadersInit = {
+    "Accept": "application/json",
+    "Content-Type": "application/json"
+  };
+  if(token) {
+    const key = "Authorization";
+    headers[key] = `Bearer ${token}`;
+  }
+  const body: BodyInit | null = data ? JSON.stringify(data) : null;
+
+  const settings: RequestInit = {
     method,
-    headers: {
-      "Accept": "application/json",
-      "Content-Type": "application/json"
-    },
-    body: JSON.stringify(data)
-  }).then(res => res.json());
+    headers,
+    body
+  };
+
+  return fetch(url + path, settings)
+    .then(async res => {
+      if(!res.ok) {
+        const text = await res.text();
+        throw new Error(text);
+      }
+
+      const respBody = await res.json();
+      return respBody;
+    });
 }

@@ -11,13 +11,14 @@ interface Props {
   saving: boolean,
   deleting: boolean,
   data?: Character,
+  errors?: string,
   onSave: typeof updateRequest,
   onDelete: typeof deleteRequest
 }
 
 // TODO: rewrite to use Redirect component
 
-const Edit: React.SFC<Props> = ({ loading, data, ...rest }) => {
+const Edit: React.SFC<Props> = ({ loading, data, errors, ...rest }) => {
   return (
     <React.Fragment>
       <div>
@@ -35,7 +36,7 @@ const Edit: React.SFC<Props> = ({ loading, data, ...rest }) => {
           <LoadingBar loading={loading} />
 
           {!loading && data && (
-            renderCharacter({data, ...rest})
+            renderCharacter({data, storeError: errors, ...rest})
           )}
           {!loading && !data && (
             <div className="alert alert-danger">Specified character not found...</div>
@@ -46,13 +47,13 @@ const Edit: React.SFC<Props> = ({ loading, data, ...rest }) => {
   );
 };
 
-const renderCharacter: React.SFC<FormProps> = ({ data, saving, deleting, onSave, onDelete }) => {
+const renderCharacter: React.SFC<FormProps> = ({ data, ...rest }) => {
   const created = new Date(data.created);
   const changed = new Date(data.lastUpdated);
 
   return (
     <React.Fragment>
-      <Form data={data} saving={saving} onSave={onSave} deleting={deleting} onDelete={onDelete} />
+      <Form data={data} {...rest} />
 
       <ul className="list-inline gutter-top">
         <li>

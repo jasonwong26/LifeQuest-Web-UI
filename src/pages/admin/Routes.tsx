@@ -5,7 +5,8 @@ import HomePage from "./Home";
 import {CharacterRoutes} from "./characters";
 import {CutsceneRoutes} from "./cutscenes";
 import {QuestRoutes} from "./quests";
-import NotFoundPage from "../NotFound";
+
+import {NotFound} from "../errors";
 
 class AdminPage extends React.Component<RouteComponentProps<{}>> {
   public render() {
@@ -17,7 +18,8 @@ class AdminPage extends React.Component<RouteComponentProps<{}>> {
         <Route path={match.path + "/characters"} component={CharacterRoutes} />
         <Route path={match.path + "/cutscenes"} component={CutsceneRoutes} />
         <Route path={match.path + "/quests"} component={QuestRoutes} />
-        <Route component={NotFoundPage} />
+
+        <Route component={NotFound} />
       </Switch>
     );
   }

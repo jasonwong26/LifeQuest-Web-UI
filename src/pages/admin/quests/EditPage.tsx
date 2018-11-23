@@ -32,6 +32,6 @@ export const EditPage: React.SFC<RouteComponentProps<RouteParams>> = ({ match })
           }
         }
       </Container>
-    </Page>
+      </Page>
   );
 };

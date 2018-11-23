@@ -1,21 +1,26 @@
 import { combineReducers } from "redux";
 import { all } from "redux-saga/effects";
 
-import { AuthUserState, authReducer } from "../auth";
+import * as Auth from "../auth";
 import * as Characters from "../admin/characters";
 import * as Cutscenes from "../admin/cutscenes";
 import * as Quests from "../admin/quests";
 
 // The top-level state object.
 export interface ApplicationState {
-  auth: AuthUserState,
+  auth: Auth.AuthState,
   characters: Characters.CharactersState,
   cutscenes: Cutscenes.CutscenesState,
   quests: Quests.QuestsState
 }
 
+type AuthTokenSelector = (state: ApplicationState) => string | undefined;
+export const authTokenSelector: AuthTokenSelector = store => {
+  return store.auth.user.accessToken;
+};
+
 export const rootReducer = combineReducers<ApplicationState>({
-  auth: authReducer,
+  auth: Auth.reducer,
   characters: Characters.reducer,
   cutscenes: Cutscenes.reducer,
   quests: Quests.reducer
@@ -23,6 +28,7 @@ export const rootReducer = combineReducers<ApplicationState>({
 
 export function* rootSaga() {
   yield all([
+    ...Auth.sagas,
     ...Characters.sagas,
     ...Cutscenes.sagas,
     ...Quests.sagas

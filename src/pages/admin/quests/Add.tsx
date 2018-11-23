@@ -62,10 +62,10 @@ export const Add: React.SFC<Props> = ({ status, ...rest }) => {
     </React.Fragment>
   );
 };
-const renderQuest: React.SFC<FormProps> = ({ data, ...rest }) => {
+const renderQuest: React.SFC<FormProps> = props => {
   return (
     <React.Fragment>
-      <Form data={data} {...rest} />
+      <Form {...props} />
     </React.Fragment>
   );
 };

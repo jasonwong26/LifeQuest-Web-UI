@@ -1,7 +1,8 @@
 import * as React from "react";
+import { Alert } from "react-bootstrap";
 
-import {TextInput, TextArea, SubmitButton} from "../../../components/forms";
-import {ImageForm } from "./ImageForm";
+import { TextInput, TextArea, SubmitButton } from "../../../components/forms";
+import { ImageForm } from "./ImageForm";
 
 import { Character, CharacterImage, createRequest, updateRequest, deleteRequest } from "../../../store/admin/characters";
 
@@ -12,7 +13,7 @@ export interface FormProps {
 
   saving: boolean,
   onSave: saveRequest,
-  saveError?: string,
+  storeError?: string,
 
   deleting?: boolean,
   onDelete?: typeof deleteRequest
@@ -48,7 +49,7 @@ export class Form extends React.Component<FormProps, State> {
   }
 
   public render() {
-    const { saving, onDelete } = this.props;
+    const { saving, onDelete, storeError } = this.props;
     const { data, errors } = this.state;
     const showDelete = !!onDelete;
     const deleting = this.props.deleting || false;
@@ -86,6 +87,11 @@ export class Form extends React.Component<FormProps, State> {
             </button>
           )}
         </div>
+        { storeError && (
+          <Alert bsStyle="danger">
+            An error occurred saving your changes.  Please retry...
+          </Alert>
+        )}
       </form>
     );
   }

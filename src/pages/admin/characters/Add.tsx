@@ -9,6 +9,7 @@ import { Character, createRequest } from "../../../store/admin/characters";
 interface Props {
   loading: boolean,
   saving: boolean,
+  errors?: string,
   onSave: typeof createRequest,
 }
 
@@ -25,7 +26,7 @@ const getEmptyCharacter: () => Character = () => {
   return Object.assign({}, template);
 };
 
-const Add: React.SFC<Props> = ({ loading, ...rest }) => {
+const Add: React.SFC<Props> = ({ loading, errors, ...rest }) => {
   const data = getEmptyCharacter();
 
   return (
@@ -49,10 +50,10 @@ const Add: React.SFC<Props> = ({ loading, ...rest }) => {
   );
 };
 
-const renderCharacter: React.SFC<FormProps> = ({data, saving, onSave}) => {
+const renderCharacter: React.SFC<FormProps> = props => {
   return (
     <React.Fragment>
-      <Form data={data} saving={saving} onSave={onSave} />
+      <Form {...props} />
     </React.Fragment>
   );
 };
