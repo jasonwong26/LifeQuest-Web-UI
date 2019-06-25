@@ -1,6 +1,6 @@
 import * as React from "react";
 import * as shortid from "shortid";
-import * as ClickOutside from "react-click-outside";
+import ClickOutside from "react-click-outside";
 
 import { TextArea } from "../../../components/forms";
 

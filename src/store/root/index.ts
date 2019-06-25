@@ -6,12 +6,15 @@ import * as Characters from "../admin/characters";
 import * as Cutscenes from "../admin/cutscenes";
 import * as Quests from "../admin/quests";
 
+import * as Demo from "../demo";
+
 // The top-level state object.
 export interface ApplicationState {
   auth: Auth.AuthState,
   characters: Characters.CharactersState,
   cutscenes: Cutscenes.CutscenesState,
-  quests: Quests.QuestsState
+  quests: Quests.QuestsState,
+  demo: Demo.DemoState
 }
 
 type AuthTokenSelector = (state: ApplicationState) => string | undefined;
@@ -23,7 +26,8 @@ export const rootReducer = combineReducers<ApplicationState>({
   auth: Auth.reducer,
   characters: Characters.reducer,
   cutscenes: Cutscenes.reducer,
-  quests: Quests.reducer
+  quests: Quests.reducer,
+  demo: Demo.reducer
 });
 
 export function* rootSaga() {
@@ -31,6 +35,7 @@ export function* rootSaga() {
     ...Auth.sagas,
     ...Characters.sagas,
     ...Cutscenes.sagas,
-    ...Quests.sagas
+    ...Quests.sagas,
+    ...Demo.sagas
   ]);
 }

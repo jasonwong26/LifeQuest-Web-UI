@@ -11,7 +11,7 @@ export interface AuthUser {
   isAdmin: boolean
 }
 
-export const enum AuthActions {
+export enum AuthActions {
   INITIALIZE_USER = "@@user/INITIALIZE_USER",
   LOGIN_USER = "@@user/LOGIN_USER",
   LOGOUT_USER = "@@user/LOGOUT_USER",

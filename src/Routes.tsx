@@ -10,6 +10,8 @@ import HomePage from "./pages/public/Home";
 import AboutPage from "./pages/public/About";
 import AdminRoutes from "./pages/admin/Routes";
 
+import {DemoRoutes} from "./pages/demo";
+
 import {AuthCallbackPage} from "./pages/auth/AuthCallbackPage";
 
 // If your app is big + you have routes with a lot of components, you should consider
@@ -29,6 +31,9 @@ const Routes: React.SFC = () => (
       <Route exact path="/" component={HomePage} />
       <Route exact path="/about" component={AboutPage} />
 
+      {/* Demo */}
+      <Route path="/demo" component={DemoRoutes} />
+      
       {/* Admin */}
       <AuthorizedRoute authorizedRoles="Admin" path="/admin" component={AdminRoutes} />
 

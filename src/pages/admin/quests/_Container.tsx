@@ -10,7 +10,7 @@ import * as Store from "../../../store/admin/quests";
 interface PropsFromState {
   data: Store.Quest[],
   status: DataStatus,
-  errors: string,
+  errors?: string,
   redirectAfterSave?: boolean
 }
 interface PropsFromDispatch {

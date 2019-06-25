@@ -18,15 +18,7 @@ export const TextArea: React.SFC<Props> = ({ name, autoFocus, onChange, onKeyPre
   if (error && error.length > 0) {
     wrapperClass += " has-error";
   }
-
-  // const Wrapper: React.SFC = ({children}) => (
-  //   <div className={wrapperClass}>
-  //     <label htmlFor={name}>{label}</label>
-  //     {children}
-  //     {error && <small className="text-danger">{error}</small>}
-  //   </div>
-  // );
-
+  
   const editor = (
     <textarea
       autoFocus={autoFocus}

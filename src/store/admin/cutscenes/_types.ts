@@ -5,7 +5,7 @@ export interface Cutscene extends ApiResponse {
   id: string
   name: string,
   category: CutsceneCategory,
-  description: string
+  description: string,
   dialogue: Dialogue[],
   trigger: Trigger
 }

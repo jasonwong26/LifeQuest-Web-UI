@@ -10,7 +10,7 @@ interface PropsFromState {
   saving: boolean,
   deleting: boolean,
   data: Store.Character[]
-  errors: string
+  errors?: string
 }
 interface PropsFromDispatch {
   fetchRequest: typeof Store.fetchRequest,
@@ -53,7 +53,7 @@ class Container extends React.Component<AllProps, State> {
   public componentDidMount() {
     const { loading, data } = this.props;
 
-    if (!loading && !data || data.length === 0) {
+    if (!loading && (!data || data.length === 0)) {
       this.props.fetchRequest();
     }
   }

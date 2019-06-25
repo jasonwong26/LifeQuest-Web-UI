@@ -11,12 +11,12 @@ interface PropsFromState {
   cutscenes: {
     data: Store.Cutscene[],
     status: DataStatus,
-    errors: string
+    errors: string | undefined
   },
   characters: {
     data: Character[],
     status: DataStatus,
-    errors: string
+    errors: string | undefined
   }
 }
 interface PropsFromDispatch {

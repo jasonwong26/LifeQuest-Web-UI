@@ -52,7 +52,7 @@ export class Form extends React.Component<FormProps, State> {
     const { saving, onDelete, storeError } = this.props;
     const { data, errors } = this.state;
     const showDelete = !!onDelete;
-    const deleting = this.props.deleting || false;
+    const deleting = !!this.props.deleting;
 
     return (
       <form
@@ -170,7 +170,7 @@ export class Form extends React.Component<FormProps, State> {
   }
   private onImageDelete = (index: number) => {
     const current = this.state.data.images || [];
-    const updated = current.filter(({}, i) => {
+    const updated = current.filter((_val, i) => {
       return i !== index;
     });
     const change = { images: updated };

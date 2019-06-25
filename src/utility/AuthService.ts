@@ -1,5 +1,5 @@
 import * as auth0 from "auth0-js";
-import * as jwtDecode from "jwt-decode";
+import jwtDecode from "jwt-decode";
 
 export interface UserProfile extends auth0.Auth0UserProfile {
   app_metadata?: AppMetaData,

@@ -1,0 +1,6 @@
+
+export enum DemoWatchersActions {
+  IMMEDIATE_CUTSCENE_ERROR = "@@demoWatchers/IMMEDIATE_CUTSCENE_ERROR",
+  CUTSCENE_FINISHED_ERROR = "@@demoWatchers/CUTSCENE_FINISHED_ERROR",
+  LOAD_NEXT_STAGE_ERROR = "@@demoWatchers/LOAD_NEXT_STAGE_ERROR"
+}

@@ -11,6 +11,22 @@
 .gutter-right-sm { margin-right: 5px; }
 .gutter-bottom-sm { margin-bottom: 5px; }
 
+/*** Navigation Styles ***/
+.sidebar-wrapper {
+  display: flex;
+}
+
+.sidebar-wrapper #sidebar {
+    min-width: 200px;
+    max-width: 200px;
+    min-height: 100vh;
+    padding-right: 15px;
+}
+  #sidebar .nav-icon {
+    padding-right: 0.25em;
+  }
+
+
 /*** CutScene Modal ***/
 div.scene-container:focus {
     outline: none;
@@ -26,6 +42,16 @@ div.scene-container:focus {
     min-height: 3em;
   }
 
+  div.scene-container .blink {
+    animation: blink 2.5s linear infinite;
+  }
+  @keyframes blink {
+    0%{opacity: 0;}
+    25%{opacity: .5;}
+    50%{opacity: 1;}
+    75%{opacity: .5;}
+    100%{opacity: 0;}
+  }
 
 /*** Cutscene Dialogue Editor ***/
 .dialogue-text-editor .text-entry {

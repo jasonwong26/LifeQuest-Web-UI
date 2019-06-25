@@ -1,6 +1,6 @@
 import * as React from "react";
 import * as shortid from "shortid";
-import * as ClickOutside from "react-click-outside";
+import ClickOutside from "react-click-outside";
 import { DragDropContext, Droppable, Draggable, DropResult, DraggableProvided } from "react-beautiful-dnd";
 
 import {TextEditorItem} from "./_TextEditorItem";
