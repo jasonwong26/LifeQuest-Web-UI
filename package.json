@@ -11,7 +11,7 @@
   "bugs": {
     "url": "https://github.com/jasonwong26/LifeQuest-Web-UI/issues"
   },
-  "homepage": "https://github.com/jasonwong26/LifeQuest-Web-UI#readme",
+  "homepage": "https://lifequest.developermouse.com",
   "scripts": {
     "lint": "tslint 'src/**/*.ts?(x)' || exit 0",
     "lint:fix": "tslint 'src/**/*.ts?(x)' --fix",

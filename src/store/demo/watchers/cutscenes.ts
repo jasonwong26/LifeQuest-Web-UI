@@ -187,10 +187,47 @@ function* dequeueFinishedCutscene(action: PayloadAction<Types.Cutscene>) {
   }
 }
 
+function* queueCutscenesForRewardRedeemed(action: PayloadAction<Types.Reward>) {
+  try {
+    const reward = action.payload;
+    const filter = {
+      active: true,
+      triggerType: Types.TriggerType.REWARD_REDEEMED,
+      triggerId: reward.id,
+      actionType: Types.ActionType.PLAY_CUTSCENE
+    };
+
+    const events: Types.EventListener[] = yield select(eventsSelector, filter);
+    const scenes: Types.Cutscene[] = yield select(cutscenesSelector);
+
+    for (let event of events) {
+      let scene = scenes.find(s => s.id === event.actionId);
+      if(!scene) throw new Error(`Cutscene ${event.actionId} could not be found to enqueue.`);
+
+      scene = { ...scene, visible: true };
+      yield put(Cutscenes.updateCutscene(scene));
+      yield put(App.queueCutscene(scene));
+
+      event = { ...event, active: false };
+      yield put(Events.updateEvent(event));
+    }
+  } catch (err) {
+    const type = DemoWatchersActions.IMMEDIATE_CUTSCENE_ERROR;
+
+    if (err instanceof Error) {
+      yield put(Actions.logError(type, err));
+    } else {
+      yield put(Actions.logError(type, "An unknown error occured."));
+    }
+  }
+}
+
+
 export const sagas = [
   takeEvery(Events.DemoEventsActions.LOAD_STAGE_SUCCESS, queueCutscenesForStageLoad),
   takeEvery(LOCATION_CHANGE, queueCutscenesForPageLoad),
   takeEvery(Types.DemoActions.FINISH_CUTSCENE, dequeueFinishedCutscene),
   takeEvery(Types.DemoActions.COMPLETE_QUEST, queueCutscenesForQuestComplete),
-  takeEvery(Profile.DemoProfileActions.PROFILE_UPDATED, queueCutscenesForRewardAvailable)
+  takeEvery(Profile.DemoProfileActions.PROFILE_UPDATED, queueCutscenesForRewardAvailable),
+  takeEvery(Profile.DemoProfileActions.REDEEM_REWARD, queueCutscenesForRewardRedeemed),
 ];

@@ -1,9 +1,10 @@
 import * as React from "react";
-import { Navbar, Nav, NavItem, NavDropdown, MenuItem } from "react-bootstrap";
+// import { Navbar, Nav, NavItem, NavDropdown, MenuItem } from "react-bootstrap";
+import { Navbar, Nav, NavItem } from "react-bootstrap";
 import { LinkContainer } from "react-router-bootstrap";
 import { Link } from "react-router-dom";
 
-import { Container } from "../../containers/auth/Container";
+// import { Container } from "../../containers/auth/Container";
 
 interface HeaderProps {
   title: string
@@ -31,7 +32,7 @@ const Header: React.SFC<HeaderProps> = ({ title }) => (
         </LinkContainer>
       </Nav>
 
-      <Container>
+      {/* <Container>
       {({user, loginUser, logOutUser}) => {
           const login = (e: React.MouseEvent<NavItem>) : void => {
             e.preventDefault();
@@ -92,7 +93,7 @@ const Header: React.SFC<HeaderProps> = ({ title }) => (
               </Nav>
             );
           }}}
-      </Container>
+      </Container> */}
       </Navbar.Collapse>
     </Navbar>
   </header>

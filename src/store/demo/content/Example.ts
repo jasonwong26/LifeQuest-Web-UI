@@ -16,7 +16,7 @@ export const example: DemoContent = {
         id: "Reward-1",
         title: "A firm pat on the back",
         description: "I mean, sure.  You can give one to yourself anytime.  But isn't more awesome when it's been EARNED?",
-        cost: 15,
+        cost: 20,
         timesRedeemed: 0
       }
     ]
@@ -254,6 +254,7 @@ export const example: DemoContent = {
     {
       id: "Demo-End",
       triggerType: TriggerType.REWARD_REDEEMED,
+      triggerId: "Reward-1",
       actionType: ActionType.PLAY_CUTSCENE,
       actionId: "Demo-End",
       active: true
