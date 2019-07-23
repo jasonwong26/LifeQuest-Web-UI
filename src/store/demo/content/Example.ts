@@ -120,8 +120,7 @@ export const example: DemoContent = {
         text: [
           "Awesome!  Nice job.",
           "Completing your first quest has earned you experience and reward points!",
-          "Why don't you do a few more quests - just a few more and you'll be able to redeem for a reward.",
-          "Oh, and I'll add the 'Profile' page so you can track your progress.",
+          "Oh wait.  You can't see those yet.  Let me add the 'Profile' page so you can track your progress.",
           "Pop over there and I'll tell you about it."
         ]
       }]
@@ -150,11 +149,47 @@ export const example: DemoContent = {
       active: true
     }]
   },
-  /* Stage 2 - Complete Quests till First Reward */
+  /* Stage 2 - Profile Page */
+  {
+    activePages: stage2Pages,
+    quests: [],
+    cutscenes: [{
+      id: "Stage2-ProfilePage",
+      title: "Everything the Light Touches",
+      visible: false,
+      watched: false,
+      dialogue: [{
+        imageUrl: "/assets/characters/developer-mouse.jpg",
+        position: ImagePosition.CENTER,
+        speaker: "Developer Mouse",
+        text: [
+          "So, let's see.  It's pretty basic right now, but you can track your progress here.",
+          "Every time you complete a quest, you'll earn experience.  As you gain levels, you'll get access to new quests, rewards, and other stuff!",
+          "You'll also earn reward points.  Which you can redeem for rewards, like the one listed below.",
+          "I just added some more quests - do a few more and you'll be able to redeem it."
+        ]
+      }]
+    }],
+    events: [{
+      id: "Stage2-ProfilePage",
+      triggerType: TriggerType.PAGE_ACTIVE,
+      triggerId: AppPages.Profile,
+      actionType: ActionType.PLAY_CUTSCENE,
+      actionId: "Stage2-ProfilePage",
+      active: true
+    },
+    {
+      id: "Stage2-Move-Next",
+      triggerType: TriggerType.CUTSCENE_WATCHED,
+      triggerId: "Stage2-ProfilePage",
+      actionType: ActionType.NEXT_STAGE,
+      active: true
+    }]
+  },  /* Stage 3 - Complete Quests till First Reward */
   {
     activePages: stage2Pages,
     quests: [{
-      id: "Stage2-Quest1",
+      id: "Stage3-Quest1",
       title: "Who's Up for Push Ups?",
       description: "Do as many push ups as you can in one minute.  Not a fan of push ups?  Pick any exercise you like instead.",
       flavorText: "Some quests will be focused on maintaining and improving your health - both mental and physical.",
@@ -166,7 +201,7 @@ export const example: DemoContent = {
       timesCompleted: 0
     },
     {
-      id: "Stage2-Quest2",
+      id: "Stage3-Quest2",
       title: "The Kindly Ninja",
       description: "Buy a dollar store gift for a friend, and leave it for them to find.  Don't let them see you do it though!",
       flavorText: "Other quests will be social focused - building and maintaining relationships with friends or family, or contributing to the community.",
@@ -178,7 +213,7 @@ export const example: DemoContent = {
       timesCompleted: 0
     },
     {
-      id: "Stage2-Quest3",
+      id: "Stage3-Quest3",
       title: "Expanded Vocabulary",
       description: "Learn a new word.  In any language you want.  Extra credit for using it in conversation today!",
       flavorText: "Still others will be focused on personal growth.  Career networking, learning new skills, and broadening horizons.",
@@ -190,7 +225,7 @@ export const example: DemoContent = {
       timesCompleted: 0
     }],
     cutscenes: [{
-      id: "Stage2-ProfilePage",
+      id: "Stage3-ProfilePage",
       title: "Everything the Light Touches",
       visible: false,
       watched: false,
@@ -206,7 +241,7 @@ export const example: DemoContent = {
       }]
     },
     {
-      id: "Stage2-FirstReward",
+      id: "Stage3-FirstReward",
       title: "Oooh... SHINY!",
       visible: false,
       watched: false,
@@ -236,19 +271,12 @@ export const example: DemoContent = {
         ]
       }]
     }],
-    events: [{
-      id: "Stage2-ProfilePage",
-      triggerType: TriggerType.PAGE_ACTIVE,
-      triggerId: AppPages.Profile,
-      actionType: ActionType.PLAY_CUTSCENE,
-      actionId: "Stage2-ProfilePage",
-      active: true
-    },
+    events: [
     {
-      id: "Stage2-FirstReward",
+      id: "Stage3-FirstReward",
       triggerType: TriggerType.REWARD_AVAILABLE,
       actionType: ActionType.PLAY_CUTSCENE,
-      actionId: "Stage2-FirstReward",
+      actionId: "Stage3-FirstReward",
       active: true
     },
     {

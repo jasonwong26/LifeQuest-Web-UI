@@ -16,6 +16,10 @@
   display: flex;
 }
 
+.navbar-bottom {
+  margin-bottom: 75px;
+}
+
 .sidebar-wrapper #sidebar {
     min-width: 200px;
     max-width: 200px;

@@ -12,7 +12,7 @@ interface HeaderProps {
 
 const Header: React.SFC<HeaderProps> = ({ title }) => (
   <header>
-    <Navbar>
+    <Navbar collapseOnSelect>
       <Navbar.Header>
         <Navbar.Brand>
           <Link to={"/"}>{title}</Link>

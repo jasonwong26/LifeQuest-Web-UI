@@ -32,8 +32,8 @@ function* handleInit() {
 function* handleLoadStageRequest(action: PayloadAction<number>) {
   const index = action.payload;
   try {
-    const cutscenes = yield select(questsSelector, index);
-    yield put(Actions.loadStageSuccess(cutscenes));
+    const quests = yield select(questsSelector, index);
+    yield put(Actions.loadStageSuccess(quests));
   } catch (err) {
     if (err instanceof Error) {
       yield put(Actions.loadStageError(err.stack!));
