@@ -229,5 +229,5 @@ export const sagas = [
   takeEvery(Types.DemoActions.FINISH_CUTSCENE, dequeueFinishedCutscene),
   takeEvery(Types.DemoActions.COMPLETE_QUEST, queueCutscenesForQuestComplete),
   takeEvery(Profile.DemoProfileActions.PROFILE_UPDATED, queueCutscenesForRewardAvailable),
-  takeEvery(Profile.DemoProfileActions.REDEEM_REWARD, queueCutscenesForRewardRedeemed),
+  takeEvery(Profile.DemoProfileActions.REDEEM_REWARD, queueCutscenesForRewardRedeemed)
 ];

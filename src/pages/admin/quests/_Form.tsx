@@ -1,7 +1,7 @@
 import * as React from "react";
-import { Alert } from "react-bootstrap";
 
 import { TextInput, TextArea, NumberInput, SubmitButton } from "../../../components/forms";
+import { Alert, AlertType } from "../../../components/layout";
 
 import {CategoriesForm} from "./_CategoriesForm";
 import {RecurrenceForm} from "./_RecurrenceForm";
@@ -201,7 +201,7 @@ export class Form extends React.Component<Props, State> {
           )}
         </div>
         { storeError && (
-          <Alert bsStyle="danger">
+          <Alert type={AlertType.Danger}>
             An error occurred saving your changes.  Please retry...
           </Alert>
         )}

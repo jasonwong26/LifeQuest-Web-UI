@@ -1,6 +1,6 @@
 import * as React from "react";
-import { Modal } from "react-bootstrap";
 
+import { Modal } from "../../components/layout";
 import { Container } from "./_Container";
 import { Layout } from "./_Layout";
 
@@ -17,25 +17,40 @@ export const CutscenesModal: React.SFC<Props> = ({ scene, onClose }) => {
       {({ sceneContainer, title, imageUrl, speaker, text, moveNext }) => {
         return (
           <Modal
-            show
-            backdrop
-            onExit={onClose}
-            onHide={onClose}>
-            <Modal.Header closeButton>
-              <Modal.Title>{title}</Modal.Title>
-            </Modal.Header>
-            <Modal.Body>
-              <Layout
-                sceneContainer={sceneContainer}
-                imageUrl={imageUrl}
-                speaker={speaker}
-                text={text}
-                moveNext={moveNext}
-              />
-            </Modal.Body>
+            title={title}
+            onClose={onClose}>
+            <Layout
+              sceneContainer={sceneContainer}
+              imageUrl={imageUrl}
+              speaker={speaker}
+              text={text}
+              moveNext={moveNext}
+            />              
           </Modal>
         );
       }}
     </Container>
   );
 };
+
+
+// return (
+//   <Modal
+//     show
+//     backdrop
+//     onExit={onClose}
+//     onHide={onClose}>
+//     <Modal.Header closeButton>
+//       <Modal.Title>{title}</Modal.Title>
+//     </Modal.Header>
+//     <Modal.Body>
+//       <Layout
+//         sceneContainer={sceneContainer}
+//         imageUrl={imageUrl}
+//         speaker={speaker}
+//         text={text}
+//         moveNext={moveNext}
+//       />
+//     </Modal.Body>
+//   </Modal>
+// );

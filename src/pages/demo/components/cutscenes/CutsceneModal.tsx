@@ -1,6 +1,6 @@
 import * as React from "react";
-import { Modal } from "react-bootstrap";
 
+import { Modal } from "../../../../components/layout";
 import { Container } from "../../Containers/ViewCutsceneContainer";
 import { Layout } from "./_Layout";
 
@@ -19,21 +19,14 @@ export const CutscenesModal: React.SFC<Props> = ({ scene, onClose }) => {
       {({ title, imageUrl, speaker, text, moveNext }) => {
         return (
           <Modal
-            show
-            backdrop
-            onExit={onModalClose}
-            onHide={onModalClose}>
-            <Modal.Header closeButton>
-              <Modal.Title>{title}</Modal.Title>
-            </Modal.Header>
-            <Modal.Body>
-              <Layout
-                imageUrl={imageUrl}
-                speaker={speaker}
-                text={text}
-                moveNext={moveNext}
-              />
-            </Modal.Body>
+            onClose={onModalClose}
+            title={title}>
+            <Layout
+              imageUrl={imageUrl}
+              speaker={speaker}
+              text={text}
+              moveNext={moveNext}
+            />
           </Modal>
         );
       }}

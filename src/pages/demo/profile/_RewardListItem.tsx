@@ -1,6 +1,6 @@
 import * as React from "react";
-import {Button, Panel} from "react-bootstrap";
 
+import {Button, Panel, ButtonType} from "../../../components/layout";
 import {Reward, redeemReward} from "../../../store/demo";
 
 interface Props {
@@ -16,10 +16,24 @@ export const RewardListItem: React.SFC<Props> = ({rewardPoints, reward, onRedeem
     if(!canAfford) return;
     onRedeem(reward);
   };
+  const redeemButton = canAfford
+    ? (
+      <Button
+        type={ButtonType.Success}
+        onClick={redeem}>
+          Redeem
+        </Button>
+    )
+    : (
+      <Button
+        type={ButtonType.Danger}
+        disabled>
+          Redeem
+        </Button>
+    );
 
   return (
     <Panel>
-      <Panel.Body>
         <h3>{reward.title}</h3>
         <div>
           <p>{reward.description}</p>
@@ -31,17 +45,8 @@ export const RewardListItem: React.SFC<Props> = ({rewardPoints, reward, onRedeem
               <strong>Times Redeemed</strong>: {reward.timesRedeemed}
             </div>
           </div>
-
-          <div className="text-right">
-            <Button
-              className={(canAfford ? "btn-success" : "btn-danger")}
-              disabled={!canAfford}
-              onClick={redeem}>
-              Redeem
-            </Button>
-          </div>
+          <div className="text-right">{redeemButton}</div>
         </div>
-      </Panel.Body>
     </Panel>
   );
 };

@@ -1,6 +1,7 @@
 import * as React from "react";
-import { Alert, Tabs, Tab, SelectCallback } from "react-bootstrap";
+import { Tabs, Tab, SelectCallback } from "react-bootstrap";
 
+import { Alert, AlertType } from "../../../components/layout";
 import { TextInput, DropDownList, TextArea, SubmitButton } from "../../../components/forms";
 import { DialogueForm } from "./_DialogueForm";
 import { TriggerForm } from "./_TriggerForm";
@@ -236,7 +237,7 @@ export class Form extends React.Component<Props, State> {
           )}
         </div>
         { storeError && (
-          <Alert bsStyle="danger">
+          <Alert type={AlertType.Danger}>
             An error occurred saving your changes.  Please retry...
           </Alert>
         )}

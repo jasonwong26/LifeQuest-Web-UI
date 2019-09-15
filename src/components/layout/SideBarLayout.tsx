@@ -22,23 +22,23 @@ export class SideBarLayout extends React.Component<AllProps, State> {
     this.state = this.getStateFromWindow();
   }
   getStateFromWindow: () => State = () => {
-    const height = window.innerHeight,
-          width = window.innerWidth,
-          isMobile = width <= 768;
+    const height = window.innerHeight;
+    const width = window.innerWidth;
+    const isMobile = width <= 768;
 
     return { isMobile, height, width };
   }
 
   componentWillMount() {
-    window.addEventListener('resize', this.refreshStateFromWindow);
+    window.addEventListener("resize", this.refreshStateFromWindow);
   }
   refreshStateFromWindow = () => {
     const newState = this.getStateFromWindow();
     this.setState(newState);
-  };  
+  }
 
   componentWillUnmount() {
-    window.removeEventListener('resize', this.refreshStateFromWindow);
+    window.removeEventListener("resize", this.refreshStateFromWindow);
   }
   
   public render() {
@@ -74,4 +74,4 @@ export class SideBarLayout extends React.Component<AllProps, State> {
       </div>
     </div>);
   }
-};
+}

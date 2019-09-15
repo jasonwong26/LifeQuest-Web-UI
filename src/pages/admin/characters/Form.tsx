@@ -1,7 +1,7 @@
 import * as React from "react";
-import { Alert } from "react-bootstrap";
 
 import { TextInput, TextArea, SubmitButton } from "../../../components/forms";
+import { Alert, AlertType } from "../../../components/layout";
 import { ImageForm } from "./ImageForm";
 
 import { Character, CharacterImage, createRequest, updateRequest, deleteRequest } from "../../../store/admin/characters";
@@ -88,7 +88,7 @@ export class Form extends React.Component<FormProps, State> {
           )}
         </div>
         { storeError && (
-          <Alert bsStyle="danger">
+          <Alert type={AlertType.Danger}>
             An error occurred saving your changes.  Please retry...
           </Alert>
         )}
@@ -170,7 +170,7 @@ export class Form extends React.Component<FormProps, State> {
   }
   private onImageDelete = (index: number) => {
     const current = this.state.data.images || [];
-    const updated = current.filter((_val, i) => {
+    const updated = current.filter((val, i) => {
       return i !== index;
     });
     const change = { images: updated };
